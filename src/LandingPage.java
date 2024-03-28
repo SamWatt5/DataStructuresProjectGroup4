@@ -64,26 +64,36 @@ public class LandingPage extends JFrame {
 
     public static void createButtons(JFrame window, Tree tree){
         LandingPageMainPanel mainArea = new LandingPageMainPanel(new BorderLayout(), "mainArea");
-        mainArea.setLayout(new GridBagLayout());
+        //mainArea.setLayout(new GridBagLayout());
+        mainArea.setLayout(new BorderLayout());
         mainArea.setBackground(new Color(242, 233, 208));
+
 
         JPanel profileArea = new JPanel();
         profileArea.setLayout(new GridBagLayout());
-        JLabel imageLabel = new JLabel(profile.getProfilePicScaled());
-        imageLabel.setPreferredSize(new Dimension(50, 50));
-        JLabel nameLabel = new JLabel(profile.getName());
-        JLabel numberLabel = new JLabel(profile.getNumber());
+        profileArea.setPreferredSize(new Dimension(mainArea.getWidth(), 50));
+
+        JLabel profileImage = new JLabel();
+        profileImage.setIcon(profile.getProfilePicScaled());
+        profileImage.setPreferredSize(new Dimension(50, 50));
+        profileImage.setMaximumSize(new Dimension(50, 50));
+        profileImage.setMinimumSize(new Dimension(50, 50));
+        JLabel profileLabel = new JLabel(profile.getName() + "   " + profile.getNumber());
+        Font profileFont = new Font("Arial", Font.PLAIN, 20);
+        profileLabel.setFont(profileFont);
+
         GridBagConstraints profileAreaConstraints = new GridBagConstraints();
         profileAreaConstraints.gridx = 0;
         profileAreaConstraints.gridy = 0;
         profileAreaConstraints.fill = HEIGHT;
+        profileAreaConstraints.gridwidth = 1;
         profileAreaConstraints.insets = new Insets(10, 10, 10, 10);
-        profileArea.add(imageLabel, profileAreaConstraints);
+        profileArea.add(profileImage, profileAreaConstraints);
         profileAreaConstraints.gridx = 1;
-        profileArea.add(nameLabel, profileAreaConstraints);
-        profileAreaConstraints.gridx = 2;
-        profileArea.add(numberLabel, profileAreaConstraints);
-        profileArea.setBackground(Color.red);
+        profileAreaConstraints.weightx = 1;
+        profileArea.add(profileLabel, profileAreaConstraints);
+        profileArea.setBackground(new Color(200, 191, 166));
+        profileArea.setBorder(BorderFactory.createLineBorder(Color.gray));
         //profileArea.setPreferredSize(new Dimension(mainArea.getWidth(), 50));
 
 
@@ -100,6 +110,35 @@ public class LandingPage extends JFrame {
         viewProfileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                JFrame profileFrame = new JFrame();
+                profileFrame.setSize(300, 400);
+                profileFrame.setTitle("New Contact");
+                profileFrame.setLocationRelativeTo(null);
+                profileFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                profileFrame.getContentPane().setBackground(new Color(242, 233, 208));
+                profileFrame.setLayout(null);
+                profileFrame.setVisible(true);
+
+                JTextField contactName = new JTextField(profile.getName());
+                JTextField contactNumber = new JTextField(profile.getNumber());
+
+                JButton submit = new JButton("Submit");
+                submit.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        profile.setName(contactName.getText());
+                        profile.setNumber(contactNumber.getText());
+                        //createButtons(window, tree);
+                        profileFrame.dispose();
+                    }
+                });
+
+                contactName.setBounds(50, 50, 200, 30);
+                contactNumber.setBounds(50, 100, 200, 30);
+                submit.setBounds(100, 150, 100, 30);
+
+                profileFrame.add(contactName);
+                profileFrame.add(contactNumber);
+                profileFrame.add(submit);
 
             }
 
@@ -114,9 +153,8 @@ public class LandingPage extends JFrame {
         newContactButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MessagePage.newContactFrame(window, tree);
-            }
 
+            }
         });
         //mainArea.add(newContactButton, BorderLayout.CENTER);
 
@@ -147,12 +185,18 @@ public class LandingPage extends JFrame {
         GridBagConstraints mainAreaConstraints = new GridBagConstraints();
         mainAreaConstraints.gridx = 0;
         mainAreaConstraints.gridy = 0;
-        mainAreaConstraints.fill = WIDTH;
-        mainArea.add(profileArea, mainAreaConstraints);
+        mainAreaConstraints.fill = HORIZONTAL;
+        mainAreaConstraints.gridwidth = 3;
+        mainAreaConstraints.weightx = 1;
+        //mainAreaConstraints.weighty = 1;
+        mainArea.add(profileArea, BorderLayout.NORTH);
         mainAreaConstraints.gridx = 1;
         mainAreaConstraints.gridy = 1;
         mainAreaConstraints.fill = NONE;
-        mainArea.add(buttonArea, mainAreaConstraints);
+        mainAreaConstraints.gridwidth = 1;
+        mainAreaConstraints.weightx = 0;
+        mainAreaConstraints.weighty = 0;
+        mainArea.add(buttonArea, BorderLayout.CENTER);
 
 
         GridBagConstraints gbc = new GridBagConstraints();

@@ -12,14 +12,14 @@ public class Profile {
         this.name = name;
         this.number = number;
         this.profilePic = profilePic;
-        Image scaledImage = profilePic.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+        Image scaledImage = profilePic.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         this.profilePicScaled = new ImageIcon(scaledImage);
     }
     public Profile(String name, String number) {
         this.name = name;
         this.number = number;
-        this.profilePic = new ImageIcon("images/defaultProfilePic.png");
-        Image scaledImage = profilePic.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+        this.profilePic = new ImageIcon("src/images/defaultProfilePic.png");
+        Image scaledImage = profilePic.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         this.profilePicScaled = new ImageIcon(scaledImage);
     }
 
