@@ -58,7 +58,7 @@ public class MessagePage extends JFrame
         home.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 window.dispose();
-                LandingPage.runProgram();
+                LandingPage.createLandingPage(tree);
             }
         });
 
@@ -188,7 +188,7 @@ public class MessagePage extends JFrame
             public void actionPerformed(ActionEvent e) {
                 String textToSend = textBox.getText();
                 Message newMessage = new Message(textToSend, contact, true, LocalDateTime.now(),contact.getMessages().getMostRecentMessage().getMessageID()+1);
-                contact.getMessages().insert(newMessage);              //createContactBar(window, tree);
+                contact.getMessages().insert(newMessage);
                 createMessageArea(window, contact);
             }
         });

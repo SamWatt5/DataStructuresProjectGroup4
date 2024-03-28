@@ -1,22 +1,29 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
+import java.time.LocalDateTime;
 
-import static java.awt.GridBagConstraints.HORIZONTAL;
-import static java.awt.GridBagConstraints.REMAINDER;
+import static java.awt.GridBagConstraints.*;
 
 public class LandingPage extends JFrame {
+
+    static Profile profile;
     public static void main(String[] args)
     {
         SwingUtilities.invokeLater(new Runnable()
         {
             public void run()
             {
-                runProgram();
+                createLandingPage();
             }
         });
 
     }
-    public static void runProgram(){
+    public LandingPage(){
+
+    }
+
+    public static void createLandingPage(){
         JFrame window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setSize(1300, 792);
@@ -28,6 +35,7 @@ public class LandingPage extends JFrame {
         window.setLayout(new GridBagLayout());
         Tree tree = new Tree(false);
         tree.initialiseContacts();
+        profile = new Profile("John Doe", "1234567890");
 
         createContactBar(window, tree);
         createButtons(window, tree);
@@ -35,10 +43,49 @@ public class LandingPage extends JFrame {
         window.setVisible(true);
     }
 
+    public static void createLandingPage(Tree tree){
+        JFrame window = new JFrame();
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setSize(1300, 792);
+        window.setTitle("DunChat landing page");
+        window.setName("landingPage");
+        window.getContentPane().setBackground(new Color(242, 233, 208));
+        window.setIconImage(new ImageIcon(MessagePage.class.getResource("images/iconFixed.png")).getImage());
+        window.setLocationRelativeTo(null);
+        window.setLayout(new GridBagLayout());
+
+        createContactBar(window, tree);
+        createButtons(window, tree);
+
+        window.setVisible(true);
+    }
+
+
+
     public static void createButtons(JFrame window, Tree tree){
         LandingPageMainPanel mainArea = new LandingPageMainPanel(new BorderLayout(), "mainArea");
         mainArea.setLayout(new GridBagLayout());
         mainArea.setBackground(new Color(242, 233, 208));
+
+        JPanel profileArea = new JPanel();
+        profileArea.setLayout(new GridBagLayout());
+        JLabel imageLabel = new JLabel(profile.getProfilePicScaled());
+        imageLabel.setPreferredSize(new Dimension(50, 50));
+        JLabel nameLabel = new JLabel(profile.getName());
+        JLabel numberLabel = new JLabel(profile.getNumber());
+        GridBagConstraints profileAreaConstraints = new GridBagConstraints();
+        profileAreaConstraints.gridx = 0;
+        profileAreaConstraints.gridy = 0;
+        profileAreaConstraints.fill = HEIGHT;
+        profileAreaConstraints.insets = new Insets(10, 10, 10, 10);
+        profileArea.add(imageLabel, profileAreaConstraints);
+        profileAreaConstraints.gridx = 1;
+        profileArea.add(nameLabel, profileAreaConstraints);
+        profileAreaConstraints.gridx = 2;
+        profileArea.add(numberLabel, profileAreaConstraints);
+        profileArea.setBackground(Color.red);
+        //profileArea.setPreferredSize(new Dimension(mainArea.getWidth(), 50));
+
 
         JPanel buttonArea = new JPanel();
         buttonArea.setLayout(new GridBagLayout());
@@ -50,7 +97,11 @@ public class LandingPage extends JFrame {
         viewProfileButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, viewProfileButton.getPreferredSize().height));
         viewProfileButton.setBorder(BorderFactory.createLineBorder(Color.gray));
         viewProfileButton.setBackground(new Color(242, 233, 208));
-        viewProfileButton.addActionListener(e -> {
+        viewProfileButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
 
         });
         //mainArea.add(viewProfileButton, BorderLayout.CENTER);
@@ -60,7 +111,11 @@ public class LandingPage extends JFrame {
         newContactButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, newContactButton.getPreferredSize().height));
         newContactButton.setBorder(BorderFactory.createLineBorder(Color.gray));
         newContactButton.setBackground(new Color(242, 233, 208));
-        newContactButton.addActionListener(e -> {
+        newContactButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MessagePage.newContactFrame(window, tree);
+            }
 
         });
         //mainArea.add(newContactButton, BorderLayout.CENTER);
@@ -70,10 +125,14 @@ public class LandingPage extends JFrame {
         newChatButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, newChatButton.getPreferredSize().height));
         newChatButton.setBorder(BorderFactory.createLineBorder(Color.gray));
         newChatButton.setBackground(new Color(242, 233, 208));
-        newChatButton.addActionListener(e -> {
+        newChatButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
 
         });
-        //mainArea.add(newChatButton, BorderLayout.CENTER);
+            //mainArea.add(newChatButton, BorderLayout.CENTER);
         GridBagConstraints buttonAreaContstraints = new GridBagConstraints();
         buttonAreaContstraints.fill = HORIZONTAL;
         buttonAreaContstraints.insets = new Insets(10, 10, 10, 10);
@@ -86,9 +145,15 @@ public class LandingPage extends JFrame {
 
 
         GridBagConstraints mainAreaConstraints = new GridBagConstraints();
+        mainAreaConstraints.gridx = 0;
+        mainAreaConstraints.gridy = 0;
+        mainAreaConstraints.fill = WIDTH;
+        mainArea.add(profileArea, mainAreaConstraints);
         mainAreaConstraints.gridx = 1;
         mainAreaConstraints.gridy = 1;
+        mainAreaConstraints.fill = NONE;
         mainArea.add(buttonArea, mainAreaConstraints);
+
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 1;
@@ -101,6 +166,8 @@ public class LandingPage extends JFrame {
         
 
     }
+
+
     public static void createContactBar(JFrame window, Tree tree){
         removeComponent(window.getContentPane(), "contactBar");
         JPanel contactBar = new JPanel();
