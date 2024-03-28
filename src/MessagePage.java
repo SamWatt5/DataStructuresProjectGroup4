@@ -40,7 +40,7 @@ public class MessagePage extends JFrame
 
     public static void createMenuBar(JFrame window, Tree tree){
         JMenuBar menuBar = new JMenuBar();
-        JMenu home = new JMenu("Home");
+        JButton home = new JButton("Home");
         JMenu contacts = new JMenu("Contacts");
         JMenu sort = new JMenu("Sort");
         JMenuItem newContact = new JMenuItem("New Contact");
