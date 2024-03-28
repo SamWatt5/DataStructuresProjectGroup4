@@ -120,4 +120,16 @@ public class Message {
     public int getMessageID() {
         return messageID;
     }
+
+    public String getHour() {
+        return timeSent.format(DateTimeFormatter.ofPattern("HH"));
+    }
+
+    public String getMinute() {
+        return timeSent.format(DateTimeFormatter.ofPattern("mm"));
+    }
+
+    public String getSecond() {
+        return timeSent.format(DateTimeFormatter.ofPattern("ss"));
+    }
 }

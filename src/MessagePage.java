@@ -111,7 +111,12 @@ public class MessagePage extends JFrame
                 Contact newContact = new Contact(contactName.getText(), contactNumber.getText());
                 newContact.getMessages().generateTestMessages();
                 tree.add(newContact);
+                removeComponent(window.getContentPane(), "contactBar");
                 createContactBar(window, tree);
+                window.revalidate();
+                window.repaint();
+                window.getContentPane().revalidate();
+                window.getContentPane().repaint();
                 newContactFrame.dispose();
             }
         });

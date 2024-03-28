@@ -1,6 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDateTime;
 
 import static java.awt.GridBagConstraints.*;
@@ -30,13 +33,21 @@ public class LandingPage extends JFrame {
         window.setTitle("DunChat landing page");
         window.setName("landingPage");
         window.getContentPane().setBackground(new Color(242, 233, 208));
+
         window.setIconImage(new ImageIcon(MessagePage.class.getResource("images/iconFixed.png")).getImage());
         window.setLocationRelativeTo(null);
         window.setLayout(new GridBagLayout());
         Tree tree = new Tree(false);
-        tree.initialiseContacts();
         profile = new Profile("John Doe", "1234567890");
-
+        tree.loadFromFile();
+        profile.loadProfile();
+        window.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent e){
+                tree.saveToFile();
+                tree.saveContactsMessagesToFile();
+                profile.saveProfile();
+            }
+        });
         createContactBar(window, tree);
         createButtons(window, tree);
 
@@ -63,6 +74,7 @@ public class LandingPage extends JFrame {
 
 
     public static void createButtons(JFrame window, Tree tree){
+        removeComponent(window.getContentPane(), "mainArea");
         LandingPageMainPanel mainArea = new LandingPageMainPanel(new BorderLayout(), "mainArea");
         //mainArea.setLayout(new GridBagLayout());
         mainArea.setLayout(new BorderLayout());
@@ -127,7 +139,7 @@ public class LandingPage extends JFrame {
                     public void actionPerformed(ActionEvent e) {
                         profile.setName(contactName.getText());
                         profile.setNumber(contactNumber.getText());
-                        //createButtons(window, tree);
+                        createButtons(window, tree);
                         profileFrame.dispose();
                     }
                 });
@@ -153,7 +165,7 @@ public class LandingPage extends JFrame {
         newContactButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                MessagePage.newContactFrame(window, tree);
             }
         });
         //mainArea.add(newContactButton, BorderLayout.CENTER);
@@ -233,6 +245,39 @@ public class LandingPage extends JFrame {
         gbc.fill = GridBagConstraints.VERTICAL;
         window.add(scrollPane, gbc);
     }
+    public static void newContactFrame(JFrame window, Tree tree){
+        JFrame newContactFrame = new JFrame();
+        newContactFrame.setSize(300, 400);
+        newContactFrame.setTitle("New Contact");
+        newContactFrame.setLocationRelativeTo(null);
+        newContactFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        newContactFrame.getContentPane().setBackground(new Color(242, 233, 208));
+        newContactFrame.setLayout(null);
+        newContactFrame.setVisible(true);
+        JTextField contactName = new JTextField("Enter contact name...");
+        JTextField contactNumber = new JTextField("Enter contact number...");
+        JButton submit = new JButton("Submit");
+        submit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                Contact newContact = new Contact(contactName.getText(), contactNumber.getText());
+                newContact.getMessages().generateTestMessages();
+                tree.add(newContact);
+                removeComponent(window.getContentPane(), "contactBar");
+                createContactBar(window, tree);
+                window.revalidate();
+                window.repaint();
+                window.getContentPane().revalidate();
+                window.getContentPane().repaint();
+                newContactFrame.dispose();
+            }
+        });
+        contactName.setBounds(50, 50, 200, 30);
+        contactNumber.setBounds(50, 100, 200, 30);
+        submit.setBounds(100, 150, 100, 30);
+        newContactFrame.add(contactName);
+        newContactFrame.add(contactNumber);
+        newContactFrame.add(submit);
+    }
 
     public static void removeComponent(Container container, String name){
         for (Component component : container.getComponents()) {
@@ -247,6 +292,9 @@ public class LandingPage extends JFrame {
             }
         }
     }
+
+
+
 
 
 }

@@ -1,5 +1,7 @@
+import java.io.*;
 import java.time.LocalDateTime;
 import java.util.Scanner;
+
 public class MessageLog {
 
     Message head;
@@ -109,5 +111,60 @@ public class MessageLog {
         insert(new Message("Okay, see you later!", contact,false,7,7,7));
         insert(new Message("Goodbye " + contact.getName() + "!", contact,true,8,8,(int)(Math.random()*60)));
 
+    }
+
+    public void saveLogToFile() {
+        try{
+            PrintWriter printWriter = new PrintWriter(new FileOutputStream( "files/" + contact.getName() + "_messages.txt"));
+            Message current = head;
+            while (current != null){
+                printWriter.println(current.getMessageText() + " "
+                        + current.isSent() + " "
+                        + current.getHour() + " "
+                        + current.getMinute() + " "
+                        + current.getSecond());
+                current = current.getNext();
+            }
+            printWriter.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+    }
+    public void loadFromFile() {
+
+        FileReader fileReader = null;
+        BufferedReader bufferedReader = null;
+        String nextLine;
+        try {
+            fileReader = new FileReader("files/" + contact.getName() + "_messages.txt");
+            bufferedReader = new BufferedReader(fileReader);
+
+            while ((nextLine = bufferedReader.readLine()) != null) {
+                String[] contactInfo = nextLine.split(" ");
+                this.insert(new Message(
+                        contactInfo[0],
+                        contact,
+                        Boolean.parseBoolean(contactInfo[2]),
+                        Integer.parseInt(contactInfo[3]),
+                        Integer.parseInt(contactInfo[4]),
+                        Integer.parseInt(contactInfo[5])));
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Messages file not found, using automatically generated messages.");
+            generateTestMessages();
+        } catch (IOException e) {
+            System.out.println("There is a problem opening or reading from the file, using automatically generated messages.");
+            generateTestMessages();
+        } finally {
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException e) {
+                    System.out.println("File was not properly opened. Using automatically generated messages.");
+                    generateTestMessages();
+                }
+            }
+        }
     }
 }

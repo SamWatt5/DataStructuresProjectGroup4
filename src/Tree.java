@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 public class Tree {
@@ -29,9 +30,9 @@ public class Tree {
         //System.out.println(contactToAdd.getMessages().getMostRecentMessage().getTimeSent() + " " + contactToAdd.getName());
         if (contactToAdd.getMessages().getMostRecentMessage().getTimeSent().isAfter(current.getMessages().getMostRecentMessage().getTimeSent())) {
             current.setLeft(addRecursive(current.getLeft(), contactToAdd));
-        }else if (contactToAdd.getMessages().getMostRecentMessage().getTimeSent().isBefore(current.getMessages().getMostRecentMessage().getTimeSent())) {
+        } else if (contactToAdd.getMessages().getMostRecentMessage().getTimeSent().isBefore(current.getMessages().getMostRecentMessage().getTimeSent())) {
             current.setRight(addRecursive(current.getRight(), contactToAdd));
-        }else {
+        } else {
             return current;
         }
         return current;
@@ -72,18 +73,18 @@ public class Tree {
 
     public void initialiseContacts() {
         //Tree tree = new Tree();
-        this.add("Sam","07123456789");
-        this.add("Jonah","07987654321");
-        this.add("Harrison","01312345678");
-        this.add("Ruairidh","666");
-        this.add("Jesus","8008135");
+        this.add("Sam", "07123456789");
+        this.add("Jonah", "07987654321");
+        this.add("Harrison", "01312345678");
+        this.add("Ruairidh", "666");
+        this.add("Jesus", "8008135");
     }
 
-    public void addNewContact(){
+    public void addNewContact() {
         String contactName = getContactName();
         String contactNumber = getContactNumber();
 
-        this.add(contactName,contactNumber);
+        this.add(contactName, contactNumber);
 
     }
 
@@ -100,8 +101,21 @@ public class Tree {
 
         return contactNum;
     }
-    public Contact getRoot(){
+
+    public Contact getRoot() {
         return root;
+    }
+
+    public void saveContactsMessagesToFile() {
+        saveContactsMessagesToFileRecursive(root);
+    }
+    public void saveContactsMessagesToFileRecursive(Contact current) {
+        if (current != null) {
+            saveContactsMessagesToFileRecursive(current.getLeft());
+            current.getMessages().saveLogToFile();
+            saveContactsMessagesToFileRecursive(current.getRight());
+        }
+
     }
 
     public void printInOrder(Contact current, JPanel contactBar, JFrame frame) {
@@ -116,8 +130,8 @@ public class Tree {
         }
     }
 
-    public void addContactsTocontactBar(Contact contact, JPanel contactBar, JFrame frame){
-        if (contact != null){
+    public void addContactsTocontactBar(Contact contact, JPanel contactBar, JFrame frame) {
+        if (contact != null) {
             addContactsTocontactBar(contact.right, contactBar, frame);
             ContactButton contactButton = new ContactButton(frame, contactBar, contact, this);
             contact.setContactButton(contactButton);
@@ -126,4 +140,52 @@ public class Tree {
         }
     }
 
+
+    public void saveToFile() {
+        try {
+            PrintWriter printWriter = new PrintWriter(new FileOutputStream("files/contacts.txt"));
+            saveToFileRecursive(root, printWriter);
+            printWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveToFileRecursive(Contact root, PrintWriter printWriter) {
+        if (root != null) {
+            saveToFileRecursive(root.left, printWriter);
+            printWriter.println(root.getName() + " " + root.getNumber());
+            saveToFileRecursive(root.right, printWriter);
+        }
+    }
+
+    public void loadFromFile() {
+        FileReader fileReader = null;
+        BufferedReader bufferedReader = null;
+        String nextLine;
+        try {
+            fileReader = new FileReader("files/contacts.txt");
+            bufferedReader = new BufferedReader(fileReader);
+
+            while ((nextLine = bufferedReader.readLine()) != null) {
+                String[] contactInfo = nextLine.split(" ");
+                this.add(contactInfo[0], contactInfo[1]);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Contacts file not found, using test contacts.");
+            initialiseContacts();
+        } catch (IOException e) {
+            System.out.println("There is a problem opening or reading from the file");
+            initialiseContacts();
+        } finally {
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException e) {
+                    System.out.println("File was not properly opened. Using test contacts.");
+                    initialiseContacts();
+                }
+            }
+        }
+    }
 }
