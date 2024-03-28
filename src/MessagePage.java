@@ -2,51 +2,45 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDateTime;
-public class Main
+public class MessagePage extends JFrame
 
 {
-    public static ContactButton currentContactButton;
+    public static ContactButton selectedContact;
     static Tree tree;
-    public static void main(String[] args)
+    public ContactButton currentContactButton;
+
+    public MessagePage(Tree theTree) //Contact selectedContact)
     {
-        SwingUtilities.invokeLater(new Runnable()
-        {
-            public void run()
-            {
-                runProgram();
-            }
-        });
-
+        //this.selectedContact = selectedContact.getContactButton();
+        tree = theTree;
+        createMessagePage(this, tree);
     }
-
-    public static void runProgram()
+    public static void createMessagePage(JFrame messagePage, Tree tree)
     {
         //Creates and sets up the window
-        JFrame window = new JFrame();
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setSize(1300, 792);
-        window.setTitle("DunChat");
-        window.getContentPane().setBackground(new Color(242, 233, 208));
-        window.setIconImage(new ImageIcon(Main.class.getResource("images/iconFixed.png")).getImage());
-        window.setLocationRelativeTo(null);
-        window.setLayout(new GridBagLayout());
+        messagePage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        messagePage.setSize(1300, 792);
+        messagePage.setTitle("DunChat message page");
+        messagePage.getContentPane().setBackground(new Color(242, 233, 208));
+        messagePage.setIconImage(new ImageIcon(MessagePage.class.getResource("images/iconFixed.png")).getImage());
+        messagePage.setLocationRelativeTo(null);
+        messagePage.setLayout(new GridBagLayout());
 
         //Creates the tree and initialises the contacts
-        tree = new Tree(false);
-        tree.initialiseContacts();
 
         //Creates the contact bar and message area
-        createMenuBar(window, tree);
-        createContactBar(window, tree);
-        createMessageArea(window, tree.getRoot());
+        createMenuBar(messagePage, tree);
+        createContactBar(messagePage, tree);
+        createMessageArea(messagePage, tree.getRoot());
 
         //Displays the window
-        window.setVisible(true);
+        messagePage.setVisible(true);
 
     }
 
     public static void createMenuBar(JFrame window, Tree tree){
         JMenuBar menuBar = new JMenuBar();
+        JMenu home = new JMenu("Home");
         JMenu contacts = new JMenu("Contacts");
         JMenu sort = new JMenu("Sort");
         JMenuItem newContact = new JMenuItem("New Contact");
@@ -61,8 +55,16 @@ public class Main
                 deleteContactFrame(window, tree);
             }
         });
+        home.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                window.dispose();
+                LandingPage.runProgram();
+            }
+        });
+
         contacts.add(newContact);
         contacts.add(deleteContact);
+        menuBar.add(home);
         menuBar.add(contacts);
         window.setJMenuBar(menuBar);
 
@@ -186,11 +188,7 @@ public class Main
             public void actionPerformed(ActionEvent e) {
                 String textToSend = textBox.getText();
                 Message newMessage = new Message(textToSend, contact, true, LocalDateTime.now(),contact.getMessages().getMostRecentMessage().getMessageID()+1);
-                contact.getMessages().insert(newMessage);
-                if (Main.currentContactButton != null) {
-                    Main.currentContactButton.update();
-                }
-                //createContactBar(window, tree);
+                contact.getMessages().insert(newMessage);              //createContactBar(window, tree);
                 createMessageArea(window, contact);
             }
         });

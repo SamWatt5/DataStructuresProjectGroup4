@@ -109,7 +109,7 @@ public class Tree {
             printInOrder(current.getLeft(), contactBar, frame);
             System.out.println(current.getName() + " " + current.getMessages().contact.getMessages().getMostRecentMessage().getTimeSentFormatted());
 
-            ContactButton contactButton = new ContactButton(frame, contactBar, current);
+            ContactButton contactButton = new ContactButton(frame, contactBar, current, this);
             current.setContactButton(contactButton);
             contactBar.add(contactButton);
             printInOrder(current.getRight(), contactBar, frame);
@@ -119,7 +119,7 @@ public class Tree {
     public void addContactsTocontactBar(Contact contact, JPanel contactBar, JFrame frame){
         if (contact != null){
             addContactsTocontactBar(contact.right, contactBar, frame);
-            ContactButton contactButton = new ContactButton(frame, contactBar, contact);
+            ContactButton contactButton = new ContactButton(frame, contactBar, contact, this);
             contact.setContactButton(contactButton);
             contactBar.add(contactButton);
             addContactsTocontactBar(contact.left, contactBar, frame);

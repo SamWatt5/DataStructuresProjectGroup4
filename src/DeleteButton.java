@@ -20,7 +20,7 @@ public class DeleteButton extends JButton {
             @Override
             public void actionPerformed(ActionEvent e) {
                 contact.getMessages().deleteMessage(messageID);
-                Main.createMessageArea(window, contact);
+                MessagePage.createMessageArea(window, contact);
             }
         });
     }

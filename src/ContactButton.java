@@ -11,7 +11,7 @@ public class ContactButton extends JButton {
     JFrame windowFrame;
     JLabel recentMessage = new JLabel();
     JLabel messageTime = new JLabel();
-    public ContactButton(JFrame frame, JPanel newWindow, Contact newContact){
+    public ContactButton(JFrame frame, JPanel newWindow, Contact newContact, Tree tree){
         window = newWindow;
         contact = newContact;
         windowFrame = frame;
@@ -75,22 +75,36 @@ public class ContactButton extends JButton {
                             }
                         }
                     }
-
-                    Main.createMessageArea(frame, contact);
-                    //contact.getMessages().printLogToTerminal();
-                    //contact.getMessages().deleteMessage();
-                    Main.currentContactButton = ContactButton.this;
-                    frame.revalidate();
-                    frame.repaint();
-
+                    openMessagePageWithContact(contact, frame, tree);
+                    }
                 }
-            }
-
             @Override
             public void mouseEntered(MouseEvent e) {
                 //System.out.println("Mouse entered");
             }
         });
+
+
+
+
+
+    }
+
+
+    public void openMessagePageWithContact(Contact contact, JFrame frame, Tree tree){
+
+        if (frame.isVisible() && frame.getName().equals("landingPage")){
+            frame.setVisible(false);
+            MessagePage messagePage = new MessagePage(tree);
+            messagePage.setVisible(true);
+            messagePage.createMessageArea(frame, contact);
+            //messagePage.currentContactButton = ContactButton.this;
+        } else {
+            MessagePage.createMessageArea(frame, contact);
+            //frame.currentContactButton = ContactButton.this;
+        }
+        frame.revalidate();
+        frame.repaint();
     }
 
     public Contact getContact() {
