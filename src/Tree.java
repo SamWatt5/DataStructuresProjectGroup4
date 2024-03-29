@@ -118,15 +118,15 @@ public class Tree {
 
     }
 
-    public void printInOrder(Contact current, JPanel contactBar, JFrame frame) {
+    public void addInOrder(Contact current, JPanel contactBar, JFrame frame) {
         if (current != null) {
-            printInOrder(current.getLeft(), contactBar, frame);
-            System.out.println(current.getName() + " " + current.getMessages().contact.getMessages().getMostRecentMessage().getTimeSentFormatted());
+            addInOrder(current.getLeft(), contactBar, frame);
+            System.out.println(current.getName() + " " + current.getMessages().getMostRecentMessage().getTimeSentFormatted());
 
             ContactButton contactButton = new ContactButton(frame, contactBar, current, this);
             current.setContactButton(contactButton);
             contactBar.add(contactButton);
-            printInOrder(current.getRight(), contactBar, frame);
+            addInOrder(current.getRight(), contactBar, frame);
         }
     }
 

@@ -3,9 +3,9 @@ import java.awt.*;
 import java.io.*;
 
 public class Profile {
-    String name;
-    String number;
-    ImageIcon profilePic;
+    private String name;
+    private String number;
+    private ImageIcon profilePic;
 
     private ImageIcon profilePicScaled;
 

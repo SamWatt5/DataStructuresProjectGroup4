@@ -84,7 +84,7 @@ public class MessagePage extends JFrame
         submit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 tree.deleteContact(contactName.getText());
-                createContactBar(window, tree);
+                createContactBar(window, tree, contactButton);
                 deleteContactFrame.dispose();
             }
         });
@@ -134,8 +134,10 @@ public class MessagePage extends JFrame
         contactBar.setName("contactBar");
         contactBar.setLayout(new BoxLayout(contactBar, BoxLayout.Y_AXIS));
         contactBar.setBackground(new Color(242, 233, 208));
-
-        tree.printInOrder(tree.root, contactBar, window);
+        if (contactButton != null) {
+            contactButton.setButtonColour(new Color(242, 233, 208));
+        }
+        tree.addInOrder(tree.getRoot(), contactBar, window);
 
 
         JScrollPane scrollPane = new JScrollPane(contactBar);
@@ -237,10 +239,10 @@ public class MessagePage extends JFrame
                 text.setBackground(Color.cyan);
                 textWithPadding.setLayout(new FlowLayout(FlowLayout.RIGHT));
                 textWithPadding.add(text);
-                DeleteButton deleteButton = new DeleteButton(contact, messageLog.getMessageFromIndex(i).getMessageID(), window);
+                DeleteButton deleteButton = new DeleteButton(contact, messageLog.getMessageFromIndex(i).getMessageID(), window, contactButton);
                 textWithPadding.add(deleteButton);
             }else{
-                DeleteButton deleteButton = new DeleteButton(contact, messageLog.getMessageFromIndex(i).getMessageID(), window);
+                DeleteButton deleteButton = new DeleteButton(contact, messageLog.getMessageFromIndex(i).getMessageID(), window, contactButton);
                 textWithPadding.add(deleteButton);
                 text.setBackground(Color.lightGray);
                 textWithPadding.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -255,4 +257,6 @@ public class MessagePage extends JFrame
         return textsPanel;
     }
 
+    public static void newContactFrame(JFrame window, Tree tree) {
+    }
 }
