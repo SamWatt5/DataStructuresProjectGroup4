@@ -1,9 +1,0 @@
-Hello Jonah true 00 00 58
-Hi! false 01 01 09
-How are you? true 02 02 44
-I'm good thanks! false 03 03 48
-That's good to hear! true 04 04 13
-I'm going to the shops, do you need anything? false 05 05 17
-No, I'm good thanks! true 06 06 34
-Okay, see you later! false 07 07 23
-Goodbye Jonah! true 08 27 52

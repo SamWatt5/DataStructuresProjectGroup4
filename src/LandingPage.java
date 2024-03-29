@@ -40,6 +40,7 @@ public class LandingPage extends JFrame {
         Tree tree = new Tree(false);
         profile = new Profile("John Doe", "1234567890");
         tree.loadFromFile();
+        tree.loadContactsMessagesFromFile();
         profile.loadProfile();
         window.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
@@ -170,7 +171,7 @@ public class LandingPage extends JFrame {
         });
         //mainArea.add(newContactButton, BorderLayout.CENTER);
 
-        JButton searchButton = new JButton("New Chat");
+        JButton searchButton = new JButton("Search for Key Words");
         searchButton.setPreferredSize(new Dimension(300, 100));
         searchButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, searchButton.getPreferredSize().height));
         searchButton.setBorder(BorderFactory.createLineBorder(Color.gray));

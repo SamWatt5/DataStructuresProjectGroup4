@@ -1,9 +1,0 @@
-Hello Sam true 00 00 57
-Hi! false 01 01 42
-How are you? true 02 02 31
-I'm good thanks! false 03 03 28
-That's good to hear! true 04 04 20
-I'm going to the shops, do you need anything? false 05 05 08
-No, I'm good thanks! true 06 06 17
-Okay, see you later! false 07 07 32
-Goodbye Sam! true 08 58 55

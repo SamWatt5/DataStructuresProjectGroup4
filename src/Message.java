@@ -59,6 +59,24 @@ public class Message {
         }
     }
 
+    //NEW MESSAGE FROM FILE
+    public Message(String text, Contact contact, boolean sent, int newHour, int newMin, int newSec, int newIsToday, int newDay, int newMonth, int newYear, int ID){
+        messageText = text;
+        reciever = contact;
+        isSent = sent;
+        messageID = ID;
+        int hour = newHour;
+        int min = newMin;
+        int sec = newSec;
+        isToday = newIsToday;
+        int day = newDay;
+        int month = newMonth;
+        int year = newYear;
+
+        timeSent = LocalDateTime.of(year,month,day,hour,min,sec);
+
+    }
+
     public Message(String text, Contact contact, boolean sent, LocalDateTime time, int ID){
         messageText = text;
         reciever = contact;
@@ -131,5 +149,17 @@ public class Message {
 
     public String getSecond() {
         return timeSent.format(DateTimeFormatter.ofPattern("ss"));
+    }
+
+    public String getDay() {
+        return timeSent.format(DateTimeFormatter.ofPattern("dd"));
+    }
+
+    public String getMonth() {
+        return timeSent.format(DateTimeFormatter.ofPattern("MM"));
+    }
+
+    public String getYear() {
+        return timeSent.format(DateTimeFormatter.ofPattern("yy"));
     }
 }

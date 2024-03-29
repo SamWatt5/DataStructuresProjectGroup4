@@ -200,4 +200,16 @@ public class Tree {
         }
         return contacts;
     }
+
+    public void loadContactsMessagesFromFile() {
+        loadContactsMessagesFromFileRecursive(root);
+    }
+
+    private void loadContactsMessagesFromFileRecursive(Contact root) {
+        if (root != null) {
+            loadContactsMessagesFromFileRecursive(root.left);
+            root.getMessages().loadFromFile();
+            loadContactsMessagesFromFileRecursive(root.right);
+        }
+    }
 }

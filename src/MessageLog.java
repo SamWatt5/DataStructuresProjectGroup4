@@ -128,16 +128,23 @@ public class MessageLog {
             PrintWriter printWriter = new PrintWriter(new FileOutputStream( "files/" + contact.getName() + "_messages.txt"));
             Message current = head;
             while (current != null){
-                printWriter.println(current.getMessageText() + " "
-                        + current.isSent() + " "
-                        + current.getHour() + " "
-                        + current.getMinute() + " "
-                        + current.getSecond());
+                printWriter.println(current.getMessageText() + "%%/SPLITTER/%%"
+                        + current.isSent() + "%%/SPLITTER/%%"
+                        + current.getHour() + "%%/SPLITTER/%%"
+                        + current.getMinute() + "%%/SPLITTER/%%"
+                        + current.getSecond() + "%%/SPLITTER/%%"
+                        + current.getIsToday() + "%%/SPLITTER/%%"
+                        + current.getDay() + "%%/SPLITTER/%%"
+                        + current.getMonth() + "%%/SPLITTER/%%"
+                        + current.getYear() + "%%/SPLITTER/%%"
+                        + current.getID());
+
                 current = current.getNext();
             }
             printWriter.close();
         }catch (IOException e){
             e.printStackTrace();
+            System.out.println("DIDNT SAVE TO FILE");
         }
 
     }
@@ -151,14 +158,20 @@ public class MessageLog {
             bufferedReader = new BufferedReader(fileReader);
 
             while ((nextLine = bufferedReader.readLine()) != null) {
-                String[] contactInfo = nextLine.split(" ");
+                String[] contactInfo = nextLine.split("%%/SPLITTER/%%");
                 this.insert(new Message(
-                        contactInfo[0],
-                        contact,
-                        Boolean.parseBoolean(contactInfo[2]),
-                        Integer.parseInt(contactInfo[3]),
-                        Integer.parseInt(contactInfo[4]),
-                        Integer.parseInt(contactInfo[5])));
+                        contactInfo[0],//message text
+                        contact,//contact
+                        Boolean.parseBoolean(contactInfo[1]),//isSent
+                        Integer.parseInt(contactInfo[2]),//hour
+                        Integer.parseInt(contactInfo[3]),//minute
+                        Integer.parseInt(contactInfo[4]),//second
+                        Integer.parseInt(contactInfo[5]),//isToday
+                        Integer.parseInt(contactInfo[6]),//day
+                        Integer.parseInt(contactInfo[7]),//month
+                        Integer.parseInt(contactInfo[8]),//year
+                        Integer.parseInt(contactInfo[9])//ID
+                ));
             }
         } catch (FileNotFoundException e) {
             System.out.println("Messages file not found, using automatically generated messages.");
