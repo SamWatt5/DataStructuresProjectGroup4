@@ -3,14 +3,15 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public class ContactButton extends JButton {
-    Contact contact;
+    private Contact contact;
 
-    JPanel window;
-    Boolean isClicked = false;
-    JPanel buttonPanel;
-    JFrame windowFrame;
-    JLabel recentMessage = new JLabel();
-    JLabel messageTime = new JLabel();
+    private JPanel window;
+    private Boolean isClicked = false;
+    private JPanel buttonPanel;
+    private JFrame windowFrame;
+    private JLabel recentMessage = new JLabel();
+    private JLabel messageTime = new JLabel();
+    private Color buttonColour;
     public ContactButton(JFrame frame, JPanel newWindow, Contact newContact, Tree tree){
         window = newWindow;
         contact = newContact;
@@ -64,7 +65,7 @@ public class ContactButton extends JButton {
                 if (!isClicked) {
                     isClicked = true;
                     panel.setBackground(new Color(200, 191, 166));
-                    setBackground(new Color(200, 191, 166));
+                    setButtonColour(new Color(200, 191, 166));
                     for (Component component : window.getComponents()) {
                         if (component instanceof ContactButton) {
                             ContactButton contactButton = (ContactButton) component;
@@ -75,7 +76,7 @@ public class ContactButton extends JButton {
                             }
                         }
                     }
-                    openMessagePageWithContact(contact, frame, tree);
+                    openMessagePageWithContact(contact, frame, tree, ContactButton.this);
                     }
                 }
             @Override
@@ -89,15 +90,22 @@ public class ContactButton extends JButton {
 
 
     }
+    public void setButtonColour(Color color){
+        this.buttonColour = color;
+        setBackground(color);
+    }
+    public Color getButtonColour(){
+        return buttonColour;
+    }
 
 
-    public void openMessagePageWithContact(Contact contact, JFrame frame, Tree tree){
+    public void openMessagePageWithContact(Contact contact, JFrame frame, Tree tree, ContactButton contactButton){
 
         if (frame.isVisible() && frame.getName().equals("landingPage")){
             frame.setVisible(false);
             MessagePage messagePage = new MessagePage(tree);
             messagePage.setVisible(true);
-            messagePage.createMessageArea(frame, contact);
+            messagePage.createMessageArea(messagePage, contact, contactButton);
             //messagePage.currentContactButton = ContactButton.this;
         } else {
             MessagePage.createMessageArea(frame, contact);

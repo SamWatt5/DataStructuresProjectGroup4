@@ -7,7 +7,7 @@ public class Profile {
     String number;
     ImageIcon profilePic;
 
-    ImageIcon profilePicScaled;
+    private ImageIcon profilePicScaled;
 
     public Profile(String name, String number, ImageIcon profilePic) {
         this.name = name;

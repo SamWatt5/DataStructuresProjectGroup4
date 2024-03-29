@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 public class MessageLog {
 
-    Message head;
-    Contact contact;
+    private Message head;
+    private Contact contact;
 
 
     public MessageLog(Contact newContact){
@@ -95,6 +95,16 @@ public class MessageLog {
         prev.setNext(current.getNext());
         System.out.println("Message deleted successfully.");
         printLogToTerminal();
+    }
+
+    public Message[] getMessagesInArray(){
+        Message[] messages = new Message[getSize()];
+        Message current = head;
+        for (int i = 0; i < messages.length; i++){
+            messages[i] = current;
+            current = current.getNext();
+        }
+        return messages;
     }
 
 

@@ -10,7 +10,7 @@ import static java.awt.GridBagConstraints.*;
 
 public class LandingPage extends JFrame {
 
-    static Profile profile;
+    private static Profile profile;
     public static void main(String[] args)
     {
         SwingUtilities.invokeLater(new Runnable()
@@ -170,15 +170,15 @@ public class LandingPage extends JFrame {
         });
         //mainArea.add(newContactButton, BorderLayout.CENTER);
 
-        JButton newChatButton = new JButton("New Chat");
-        newChatButton.setPreferredSize(new Dimension(300, 100));
-        newChatButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, newChatButton.getPreferredSize().height));
-        newChatButton.setBorder(BorderFactory.createLineBorder(Color.gray));
-        newChatButton.setBackground(new Color(242, 233, 208));
-        newChatButton.addActionListener(new ActionListener() {
+        JButton searchButton = new JButton("New Chat");
+        searchButton.setPreferredSize(new Dimension(300, 100));
+        searchButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, searchButton.getPreferredSize().height));
+        searchButton.setBorder(BorderFactory.createLineBorder(Color.gray));
+        searchButton.setBackground(new Color(242, 233, 208));
+        searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                searchForMessage(tree);
             }
 
         });
@@ -191,17 +191,12 @@ public class LandingPage extends JFrame {
         buttonAreaContstraints.gridy = 1;
         buttonArea.add(newContactButton, buttonAreaContstraints);
         buttonAreaContstraints.gridy = 2;
-        buttonArea.add(newChatButton, buttonAreaContstraints);
+        buttonArea.add(searchButton, buttonAreaContstraints);
 
         mainArea.add(profileArea, BorderLayout.NORTH);
-        JPanel testPanel1 = new JPanel();
-        testPanel1.setBackground(Color.red);
-        JPanel testPanel2 = new JPanel();
-        testPanel2.setBackground(Color.BLUE);
-        JPanel testPanel3 = new JPanel();
-        testPanel3.setBackground(Color.orange);
         JPanel buttonsAndLogo = new JPanel(new GridBagLayout());
         GridBagConstraints BLConstraints = new GridBagConstraints();
+        buttonsAndLogo.setBackground(new Color(242, 233, 208));
         BLConstraints.gridx = 1;
         BLConstraints.gridy = 0;
         BLConstraints.fill = HORIZONTAL;
@@ -215,9 +210,6 @@ public class LandingPage extends JFrame {
         BLConstraints.fill = NONE;
         BLConstraints.gridy = 1;
         buttonsAndLogo.add(buttonArea, BLConstraints);
-        mainArea.add(testPanel1, BorderLayout.WEST);
-        mainArea.add(testPanel2, BorderLayout.EAST);
-        mainArea.add(testPanel3, BorderLayout.SOUTH);
         mainArea.add(buttonsAndLogo, BorderLayout.CENTER);
 
 
@@ -233,6 +225,54 @@ public class LandingPage extends JFrame {
 
     }
 
+    public static void searchForMessage(Tree tree){
+        JFrame searchFrame = new JFrame();
+        searchFrame.setSize(300, 400);
+        searchFrame.setTitle("Search for message");
+        searchFrame.setLocationRelativeTo(null);
+        searchFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        searchFrame.getContentPane().setBackground(new Color(242, 233, 208));
+        searchFrame.setLayout(null);
+        searchFrame.setVisible(true);
+        JTextField searchField = new JTextField("Enter search term...");
+        JButton submit = new JButton("Submit");
+        submit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String searchTerm = searchField.getText();
+                searchFrame.dispose();
+                searchResultsFrame(searchTerm, tree);
+            }
+        });
+        searchField.setBounds(50, 50, 200, 30);
+        submit.setBounds(100, 100, 100, 30);
+        searchFrame.add(searchField);
+        searchFrame.add(submit);
+    }
+
+    public static void searchResultsFrame(String searchTerm, Tree tree){
+        JFrame searchResultsFrame = new JFrame();
+        searchResultsFrame.setSize(300, 400);
+        searchResultsFrame.setTitle("Search Results");
+        searchResultsFrame.setLocationRelativeTo(null);
+        searchResultsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        searchResultsFrame.getContentPane().setBackground(new Color(242, 233, 208));
+        searchResultsFrame.setLayout(null);
+        searchResultsFrame.setVisible(true);
+        int y = 50;
+        for (Contact contact : tree.getContacts()){
+            if (contact != null) {
+                for (Message message : contact.getMessages().getMessagesInArray()) {
+                    if (message.getMessageText().contains(searchTerm)) {
+                        JLabel result = new JLabel(contact.getName() + ": " + message.getMessageText());
+                        result.setBounds(50, y, 200, 30);
+                        searchResultsFrame.add(result);
+                        y += 50;
+                    }
+                }
+            }
+        }
+    }
+
 
     public static void createContactBar(JFrame window, Tree tree){
         removeComponent(window.getContentPane(), "contactBar");
@@ -241,7 +281,7 @@ public class LandingPage extends JFrame {
         contactBar.setLayout(new BoxLayout(contactBar, BoxLayout.Y_AXIS));
         contactBar.setBackground(new Color(242, 233, 208));
 
-        tree.printInOrder(tree.root, contactBar, window);
+        tree.addInOrder(tree.getRoot(), contactBar, window);
 
 
         JScrollPane scrollPane = new JScrollPane(contactBar);

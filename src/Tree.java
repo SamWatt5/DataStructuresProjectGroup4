@@ -3,8 +3,8 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 public class Tree {
-    Contact root;
-    Boolean sortedAlphabetically;
+    private Contact root;
+    private Boolean sortedAlphabetically;
     //Tree tree = new Tree();
 
     public Tree(Boolean alphabetical) {
@@ -187,5 +187,17 @@ public class Tree {
                 }
             }
         }
+    }
+
+    public Contact[] getContacts() {
+        Contact[] contacts = new Contact[5];
+        int i = 0;
+        Contact current = root;
+        while (current != null) {
+            contacts[i] = current;
+            i++;
+            current = current.getRight();
+        }
+        return contacts;
     }
 }

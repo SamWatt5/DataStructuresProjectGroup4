@@ -4,9 +4,9 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class DeleteButton extends JButton {
-    int message;
-    Contact contact;
-    public DeleteButton(Contact contact, int messageID, JFrame window){
+    private int message;
+    private Contact contact;
+    public DeleteButton(Contact contact, int messageID, JFrame window, ContactButton contactButton){
         setPreferredSize(new Dimension(30, 30));
         setMaximumSize(new Dimension(Integer.MAX_VALUE, getPreferredSize().height));
         setBackground(new Color(242, 233, 208));
