@@ -125,7 +125,8 @@ public class MessageLog {
 
     public void saveLogToFile() {
         try{
-            PrintWriter printWriter = new PrintWriter(new FileOutputStream( "files/" + contact.getName() + "_messages.txt"));
+            new PrintWriter(new FileOutputStream( "files/" + contact.getName() + "_messages.txt", false)).close();
+            PrintWriter printWriter = new PrintWriter(new FileOutputStream( "files/" + contact.getName() + "_messages.txt", false));
             Message current = head;
             while (current != null){
                 printWriter.println(current.getMessageText() + "%%/SPLITTER/%%"

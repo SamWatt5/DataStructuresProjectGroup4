@@ -143,7 +143,7 @@ public class Tree {
 
     public void saveToFile() {
         try {
-            PrintWriter printWriter = new PrintWriter(new FileOutputStream("files/contacts.txt"));
+            PrintWriter printWriter = new PrintWriter(new FileOutputStream("files/contacts.txt", false));
             saveToFileRecursive(root, printWriter);
             printWriter.close();
         } catch (IOException e) {
