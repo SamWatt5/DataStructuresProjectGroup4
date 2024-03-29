@@ -27,7 +27,6 @@ public class Tree {
         if (current == null) {
             return contactToAdd;
         }
-        //System.out.println(contactToAdd.getMessages().getMostRecentMessage().getTimeSent() + " " + contactToAdd.getName());
         if (contactToAdd.getMessages().getMostRecentMessage().getTimeSent().isAfter(current.getMessages().getMostRecentMessage().getTimeSent())) {
             current.setLeft(addRecursive(current.getLeft(), contactToAdd));
         } else if (contactToAdd.getMessages().getMostRecentMessage().getTimeSent().isBefore(current.getMessages().getMostRecentMessage().getTimeSent())) {

@@ -8,15 +8,14 @@ public class MessageLog {
     private Contact contact;
 
 
-    public MessageLog(Contact newContact){
+    public MessageLog(Contact newContact) {
         contact = newContact;
-        generateTestMessages();
-
+        loadFromFile();
     }
 
-    public void insert(Message message){
+    public void insert(Message message) {
         Message current = head;
-        while (current.getNext() != null){
+        while (current.getNext() != null) {
             current = current.getNext();
         }
         current.setNext(message);
@@ -26,41 +25,43 @@ public class MessageLog {
         }
     }
 
-    public Message getMessageFromIndex(int i){
+    public Message getMessageFromIndex(int i) {
         Message current = head;
-        for (int j = 0; j < i; j++){
+        for (int j = 0; j < i; j++) {
             current = current.getNext();
         }
         return current;
     }
 
-    public int getSize(){
+    public int getSize() {
         int size = 0;
         Message current = head;
-        while (current != null){
+        while (current != null) {
             size++;
             current = current.getNext();
         }
         return size;
     }
 
-    public void printLogToTerminal(){
+    public void printLogToTerminal() {
         Message current = head;
-        while (current != null){
+        while (current != null) {
             if (current.isSent()) {
                 System.out.print(current.getTimeSentFormatted() + "                             ");
                 System.out.println(current.getMessageText());
-            }else{
+            } else {
                 System.out.println(current.getTimeSentFormatted() + " " + current.getMessageText());
             }
             current = current.getNext();
         }
     }
-    public Message getMostRecentMessage(){
+
+    public Message getMostRecentMessage() {
         Message current = head;
-        while (current.getNext() != null){
+        while (current.getNext() != null) {
             current = current.getNext();
         }
+
         return current;
     }
 
@@ -97,10 +98,10 @@ public class MessageLog {
         printLogToTerminal();
     }
 
-    public Message[] getMessagesInArray(){
+    public Message[] getMessagesInArray() {
         Message[] messages = new Message[getSize()];
         Message current = head;
-        for (int i = 0; i < messages.length; i++){
+        for (int i = 0; i < messages.length; i++) {
             messages[i] = current;
             current = current.getNext();
         }
@@ -108,31 +109,26 @@ public class MessageLog {
     }
 
 
-    public void generateTestMessages(){
+    public void generateTestMessages() {
 
         //GENERATE EXAMPLE MESSAGES
-        head = new Message("Hello " + contact.getName(), contact,true,0,0,0);
-        insert(new Message("Hi!", contact, false,1,1,1));
-        insert(new Message("How are you?", contact, true,2,2,2));
-        insert(new Message("I'm good thanks!", contact,false,3,3,3));
-        insert(new Message("That's good to hear!", contact,true,4,4,4));
-        insert(new Message("I'm going to the shops, do you need anything?", contact,false,5,5,5));
-        insert(new Message("No, I'm good thanks!", contact,true,6,6,6));
-        insert(new Message("Okay, see you later!", contact,false,7,7,7));
-        insert(new Message("Goodbye " + contact.getName() + "!", contact,true,8,8,(int)(Math.random()*60)));
+        head = new Message("Hello " + contact.getName(), contact, true, 0, 0, 0);
+        insert(new Message("Hi!", contact, false, 1, 1, 1));
+        insert(new Message("How are you?", contact, true, 2, 2, 2));
+        insert(new Message("I'm good thanks!", contact, false, 3, 3, 3));
+        insert(new Message("That's good to hear!", contact, true, 4, 4, 4));
+        insert(new Message("I'm going to the shops, do you need anything?", contact, false, 5, 5, 5));
+        insert(new Message("No, I'm good thanks!", contact, true, 6, 6, 6));
+        insert(new Message("Okay, see you later!", contact, false, 7, 7, 7));
+        insert(new Message("Goodbye " + contact.getName() + "!", contact, true, 8, 8, (int) (Math.random() * 60)));
 
     }
 
     public void saveLogToFile() {
-        try{
-            File file = new File("files/" + contact.getName() + "_messages.txt");
-            if (file.exists()) {
-                file.delete();
-            }
-            file.createNewFile();
-            PrintWriter printWriter = new PrintWriter(new FileOutputStream( "files/" + contact.getName() + "_messages.txt", false));
+        try {
+            PrintWriter printWriter = new PrintWriter(new FileOutputStream("files/" + contact.getName() + "_messages.txt", false));
             Message current = head;
-            while (current != null){
+            while (current != null) {
                 printWriter.println(current.getMessageText() + "%%/SPLITTER/%%"
                         + current.isSent() + "%%/SPLITTER/%%"
                         + current.getHour() + "%%/SPLITTER/%%"
@@ -147,12 +143,13 @@ public class MessageLog {
                 current = current.getNext();
             }
             printWriter.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             System.out.println("DIDNT SAVE TO FILE");
         }
 
     }
+
     public void loadFromFile() {
 
         FileReader fileReader = null;
@@ -164,19 +161,35 @@ public class MessageLog {
 
             while ((nextLine = bufferedReader.readLine()) != null) {
                 String[] contactInfo = nextLine.split("%%/SPLITTER/%%");
-                this.insert(new Message(
-                        contactInfo[0],//message text
-                        contact,//contact
-                        Boolean.parseBoolean(contactInfo[1]),//isSent
-                        Integer.parseInt(contactInfo[2]),//hour
-                        Integer.parseInt(contactInfo[3]),//minute
-                        Integer.parseInt(contactInfo[4]),//second
-                        Integer.parseInt(contactInfo[5]),//isToday
-                        Integer.parseInt(contactInfo[6]),//day
-                        Integer.parseInt(contactInfo[7]),//month
-                        Integer.parseInt(contactInfo[8]),//year
-                        Integer.parseInt(contactInfo[9])//ID
-                ));
+                if (head == null) {
+                    head = new Message(
+                            contactInfo[0],//message text
+                            contact,//contact
+                            Boolean.parseBoolean(contactInfo[1]),//isSent
+                            Integer.parseInt(contactInfo[2]),//hour
+                            Integer.parseInt(contactInfo[3]),//minute
+                            Integer.parseInt(contactInfo[4]),//second
+                            Integer.parseInt(contactInfo[5]),//isToday
+                            Integer.parseInt(contactInfo[6]),//day
+                            Integer.parseInt(contactInfo[7]),//month
+                            Integer.parseInt(contactInfo[8]),//year
+                            Integer.parseInt(contactInfo[9])//ID
+                    );
+                } else {
+                    this.insert(new Message(
+                            contactInfo[0],//message text
+                            contact,//contact
+                            Boolean.parseBoolean(contactInfo[1]),//isSent
+                            Integer.parseInt(contactInfo[2]),//hour
+                            Integer.parseInt(contactInfo[3]),//minute
+                            Integer.parseInt(contactInfo[4]),//second
+                            Integer.parseInt(contactInfo[5]),//isToday
+                            Integer.parseInt(contactInfo[6]),//day
+                            Integer.parseInt(contactInfo[7]),//month
+                            Integer.parseInt(contactInfo[8]),//year
+                            Integer.parseInt(contactInfo[9])//ID
+                    ));
+                }
             }
         } catch (FileNotFoundException e) {
             System.out.println("Messages file not found, using automatically generated messages.");

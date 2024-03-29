@@ -40,7 +40,7 @@ public class LandingPage extends JFrame {
         Tree tree = new Tree(false);
         profile = new Profile("John Doe", "1234567890");
         tree.loadFromFile();
-        tree.loadContactsMessagesFromFile();
+        //tree.loadContactsMessagesFromFile();
         profile.loadProfile();
         window.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
