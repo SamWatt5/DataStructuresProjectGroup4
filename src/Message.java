@@ -2,7 +2,6 @@ import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.LinkedList;
 import java.util.Date;
 
 public class Message {
@@ -123,16 +122,6 @@ public class Message {
             formattedTime = timeSent.format(DateTimeFormatter.ofPattern("dd/MM/yy HH:mm"));
         }
         return formattedTime;
-    }
-
-    public static void createLinkedLists() {
-        LinkedList<String> contactMessages1 = new LinkedList<String>();
-        contactMessages1.add("Hello");
-        contactMessages1.add("Would you like to come premier with me?");
-
-        LinkedList<String> userMessages1 = new LinkedList<String>();
-        userMessages1.add("Hi");
-        userMessages1.add("Yes, of course! Be there in 5.");
     }
 
     public int getMessageID() {

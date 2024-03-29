@@ -23,7 +23,7 @@ public class LandingPage extends JFrame {
 
     }
     public LandingPage(){
-
+        createLandingPage();
     }
 
     public static void createLandingPage(){
@@ -65,6 +65,13 @@ public class LandingPage extends JFrame {
         window.setIconImage(new ImageIcon(MessagePage.class.getResource("images/iconFixed.png")).getImage());
         window.setLocationRelativeTo(null);
         window.setLayout(new GridBagLayout());
+        window.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent e){
+                tree.saveToFile();
+                tree.saveContactsMessagesToFile();
+                profile.saveProfile();
+            }
+        });
 
         createContactBar(window, tree);
         createButtons(window, tree);
