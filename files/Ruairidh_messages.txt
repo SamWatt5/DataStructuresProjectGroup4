@@ -1,9 +1,9 @@
-Hello Ruairidh true 00 00 30
-Hi! false 01 01 44
-How are you? true 02 02 21
-I'm good thanks! false 03 03 12
-That's good to hear! true 04 04 06
-I'm going to the shops, do you need anything? false 05 05 26
-No, I'm good thanks! true 06 06 28
-Okay, see you later! false 07 07 32
-Goodbye Ruairidh! true 08 58 25
+Hello Ruairidh true 00 00 57
+Hi! false 01 01 31
+How are you? true 02 02 12
+I'm good thanks! false 03 03 56
+That's good to hear! true 04 04 41
+I'm going to the shops, do you need anything? false 05 05 23
+No, I'm good thanks! true 06 06 43
+Okay, see you later! false 07 07 48
+Goodbye Ruairidh! true 08 15 16

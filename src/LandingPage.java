@@ -193,22 +193,32 @@ public class LandingPage extends JFrame {
         buttonAreaContstraints.gridy = 2;
         buttonArea.add(newChatButton, buttonAreaContstraints);
 
-
-        GridBagConstraints mainAreaConstraints = new GridBagConstraints();
-        mainAreaConstraints.gridx = 0;
-        mainAreaConstraints.gridy = 0;
-        mainAreaConstraints.fill = HORIZONTAL;
-        mainAreaConstraints.gridwidth = 3;
-        mainAreaConstraints.weightx = 1;
-        //mainAreaConstraints.weighty = 1;
         mainArea.add(profileArea, BorderLayout.NORTH);
-        mainAreaConstraints.gridx = 1;
-        mainAreaConstraints.gridy = 1;
-        mainAreaConstraints.fill = NONE;
-        mainAreaConstraints.gridwidth = 1;
-        mainAreaConstraints.weightx = 0;
-        mainAreaConstraints.weighty = 0;
-        mainArea.add(buttonArea, BorderLayout.CENTER);
+        JPanel testPanel1 = new JPanel();
+        testPanel1.setBackground(Color.red);
+        JPanel testPanel2 = new JPanel();
+        testPanel2.setBackground(Color.BLUE);
+        JPanel testPanel3 = new JPanel();
+        testPanel3.setBackground(Color.orange);
+        JPanel buttonsAndLogo = new JPanel(new GridBagLayout());
+        GridBagConstraints BLConstraints = new GridBagConstraints();
+        BLConstraints.gridx = 1;
+        BLConstraints.gridy = 0;
+        BLConstraints.fill = HORIZONTAL;
+        BLConstraints.weighty = 1;
+        ImageIcon unscaledImage = new ImageIcon("src/images/titleTransparent.png");
+
+        Image scaledImage = unscaledImage.getImage().getScaledInstance(270,90, Image.SCALE_SMOOTH);
+        JLabel logo = new JLabel(new ImageIcon(scaledImage));
+        buttonsAndLogo.add(logo, BLConstraints);
+        BLConstraints.weighty = 0;
+        BLConstraints.fill = NONE;
+        BLConstraints.gridy = 1;
+        buttonsAndLogo.add(buttonArea, BLConstraints);
+        mainArea.add(testPanel1, BorderLayout.WEST);
+        mainArea.add(testPanel2, BorderLayout.EAST);
+        mainArea.add(testPanel3, BorderLayout.SOUTH);
+        mainArea.add(buttonsAndLogo, BorderLayout.CENTER);
 
 
         GridBagConstraints gbc = new GridBagConstraints();

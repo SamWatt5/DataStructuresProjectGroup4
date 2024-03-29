@@ -1,9 +1,9 @@
-Hello Harrison true 00 00 11
-Hi! false 01 01 03
-How are you? true 02 02 34
-I'm good thanks! false 03 03 49
-That's good to hear! true 04 04 34
-I'm going to the shops, do you need anything? false 05 05 04
-No, I'm good thanks! true 06 06 06
-Okay, see you later! false 07 07 53
-Goodbye Harrison! true 08 24 05
+Hello Harrison true 00 00 31
+Hi! false 01 01 53
+How are you? true 02 02 46
+I'm good thanks! false 03 03 44
+That's good to hear! true 04 04 04
+I'm going to the shops, do you need anything? false 05 05 24
+No, I'm good thanks! true 06 06 31
+Okay, see you later! false 07 07 30
+Goodbye Harrison! true 08 31 14
