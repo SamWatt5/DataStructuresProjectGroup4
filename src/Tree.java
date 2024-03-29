@@ -143,18 +143,20 @@ public class Tree {
 
     public void saveToFile() {
         try {
-            PrintWriter printWriter = new PrintWriter(new FileOutputStream("files/contacts.txt", false));
-            saveToFileRecursive(root, printWriter);
-            printWriter.close();
+            PrintWriter printWriter1 = new PrintWriter(new FileOutputStream("files/contacts.txt", false));
+            saveToFileRecursive(root, printWriter1);
+            printWriter1.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void saveToFileRecursive(Contact root, PrintWriter printWriter) {
+    private void saveToFileRecursive(Contact root, PrintWriter printWriter){
         if (root != null) {
             saveToFileRecursive(root.left, printWriter);
             printWriter.println(root.getName() + " " + root.getNumber());
+            root.getMessages().saveLogToFile();
             saveToFileRecursive(root.right, printWriter);
         }
     }

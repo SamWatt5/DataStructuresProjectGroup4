@@ -125,7 +125,11 @@ public class MessageLog {
 
     public void saveLogToFile() {
         try{
-            new PrintWriter(new FileOutputStream( "files/" + contact.getName() + "_messages.txt", false)).close();
+            File file = new File("files/" + contact.getName() + "_messages.txt");
+            if (file.exists()) {
+                file.delete();
+            }
+            file.createNewFile();
             PrintWriter printWriter = new PrintWriter(new FileOutputStream( "files/" + contact.getName() + "_messages.txt", false));
             Message current = head;
             while (current != null){

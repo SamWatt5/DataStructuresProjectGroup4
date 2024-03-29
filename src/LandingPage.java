@@ -45,7 +45,7 @@ public class LandingPage extends JFrame {
         window.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
                 tree.saveToFile();
-                tree.saveContactsMessagesToFile();
+                //tree.saveContactsMessagesToFile();
                 profile.saveProfile();
             }
         });
@@ -68,7 +68,7 @@ public class LandingPage extends JFrame {
         window.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
                 tree.saveToFile();
-                tree.saveContactsMessagesToFile();
+                //tree.saveContactsMessagesToFile();
                 profile.saveProfile();
             }
         });
