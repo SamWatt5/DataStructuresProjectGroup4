@@ -139,10 +139,26 @@ public class LandingPage extends JFrame {
                 profileFrame.setLayout(null);
                 profileFrame.setVisible(true);
 
+                JButton profilePicButton = new JButton("Change Profile Picture");
                 JTextField contactName = new JTextField(profile.getName());
                 JTextField contactNumber = new JTextField(profile.getNumber());
 
                 JButton submit = new JButton("Submit");
+                profilePicButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+
+                            FileDialog fileDialog = new FileDialog(profileFrame, "Choose a file", FileDialog.LOAD);
+                            fileDialog.setVisible(true);
+                            profile.setProfilePic(fileDialog.getDirectory() + fileDialog.getFile());
+
+                        }catch (Exception ex){
+                            ex.printStackTrace();
+                            profile.setProfilePic("src/images/defaultProfilePic.png");
+                        }
+                    }
+                });
+
                 submit.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                         profile.setName(contactName.getText());
@@ -152,10 +168,12 @@ public class LandingPage extends JFrame {
                     }
                 });
 
-                contactName.setBounds(50, 50, 200, 30);
-                contactNumber.setBounds(50, 100, 200, 30);
-                submit.setBounds(100, 150, 100, 30);
+                profilePicButton.setBounds(50, 50, 200, 30);
+                contactName.setBounds(50, 100, 200, 30);
+                contactNumber.setBounds(50, 150, 200, 30);
+                submit.setBounds(100, 200, 100, 30);
 
+                profileFrame.add(profilePicButton);
                 profileFrame.add(contactName);
                 profileFrame.add(contactNumber);
                 profileFrame.add(submit);
@@ -173,7 +191,7 @@ public class LandingPage extends JFrame {
         newContactButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                MessagePage.newContactFrame(window, tree);
+                newContactFrame(window, tree);
             }
         });
         //mainArea.add(newContactButton, BorderLayout.CENTER);
@@ -233,6 +251,8 @@ public class LandingPage extends JFrame {
 
     }
 
+
+
     public static void searchForMessage(Tree tree){
         JFrame searchFrame = new JFrame();
         searchFrame.setSize(300, 400);
@@ -270,7 +290,7 @@ public class LandingPage extends JFrame {
         for (Contact contact : tree.getContacts()){
             if (contact != null) {
                 for (Message message : contact.getMessages().getMessagesInArray()) {
-                    if (message.getMessageText().contains(searchTerm)) {
+                    if (message.getMessageText().toUpperCase().contains(searchTerm.toUpperCase())) {
                         JLabel result = new JLabel(contact.getName() + ": " + message.getMessageText());
                         result.setBounds(50, y, 200, 30);
                         searchResultsFrame.add(result);

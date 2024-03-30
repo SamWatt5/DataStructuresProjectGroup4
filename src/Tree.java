@@ -1,7 +1,10 @@
 import javax.swing.*;
 import java.io.*;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Scanner;
+import java.util.stream.Stream;
+
 public class Tree {
     private Contact root;
     private Boolean sortedAlphabetically;
@@ -154,7 +157,7 @@ public class Tree {
     private void saveToFileRecursive(Contact root, PrintWriter printWriter){
         if (root != null) {
             saveToFileRecursive(root.left, printWriter);
-            printWriter.println(root.getName() + " " + root.getNumber());
+            printWriter.println(root.getName() + "%% 101010CONTACTSPLIT010101 %%" + root.getNumber());
             root.getMessages().saveLogToFile();
             saveToFileRecursive(root.right, printWriter);
         }
@@ -169,7 +172,7 @@ public class Tree {
             bufferedReader = new BufferedReader(fileReader);
 
             while ((nextLine = bufferedReader.readLine()) != null) {
-                String[] contactInfo = nextLine.split(" ");
+                String[] contactInfo = nextLine.split("%% 101010CONTACTSPLIT010101 %%");
                 this.add(contactInfo[0], contactInfo[1]);
             }
         } catch (FileNotFoundException e) {
@@ -191,15 +194,23 @@ public class Tree {
     }
 
     public Contact[] getContacts() {
-        Contact[] contacts = new Contact[5];
-        int i = 0;
-        Contact current = root;
-        while (current != null) {
-            contacts[i] = current;
-            i++;
-            current = current.getRight();
-        }
+        Contact contacts[] = getContactsRecursive(root);
         return contacts;
+    }
+
+    private Contact[] getContactsRecursive(Contact current) {
+        if (current == null){
+            return new Contact[0];
+        }
+        Contact[] leftContacts = getContactsRecursive(current.getLeft());
+        Contact[] currentContact = {current};
+        Contact[] rightContacts = getContactsRecursive(current.getRight());
+        Contact[] result = new Contact[leftContacts.length + currentContact.length + rightContacts.length];
+        System.arraycopy(leftContacts, 0, result, 0, leftContacts.length);
+        System.arraycopy(currentContact, 0, result, leftContacts.length, currentContact.length);
+        System.arraycopy(rightContacts, 0, result, leftContacts.length + currentContact.length, rightContacts.length);
+
+        return result;
     }
 
     public void loadContactsMessagesFromFile() {

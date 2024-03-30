@@ -26,6 +26,13 @@ public class MessagePage extends JFrame
         messagePage.setLocationRelativeTo(null);
         messagePage.setLayout(new GridBagLayout());
 
+        messagePage.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent e){
+                tree.saveToFile();
+                //tree.saveContactsMessagesToFile();
+                //profile.saveProfile();
+            }
+        });
         //Creates the tree and initialises the contacts
 
         //Creates the contact bar and message area
@@ -126,6 +133,15 @@ public class MessagePage extends JFrame
         newContactFrame.add(contactName);
         newContactFrame.add(contactNumber);
         newContactFrame.add(submit);
+
+
+
+        contactName.setBounds(50, 50, 200, 30);
+        contactNumber.setBounds(50, 100, 200, 30);
+        submit.setBounds(100, 150, 100, 30);
+        newContactFrame.add(contactName);
+        newContactFrame.add(contactNumber);
+        newContactFrame.add(submit);
     }
 
     public static void createContactBar(JFrame window, Tree tree, ContactButton contactButton){
@@ -177,6 +193,33 @@ public class MessagePage extends JFrame
 
         messageArea.setBackground(new Color(242, 233, 208));
         textBox.setPreferredSize(new Dimension(messageArea.getWidth(), 50));
+
+        JPanel contactInfoArea = new JPanel();
+        contactInfoArea.setLayout(new GridBagLayout());
+        contactInfoArea.setPreferredSize(new Dimension(messageArea.getWidth(), 50));
+
+        JLabel contactInfoImage = new JLabel();
+        contactInfoImage.setIcon(selectedContact.getProfilePicScaled());
+        contactInfoImage.setPreferredSize(new Dimension(50, 50));
+        contactInfoImage.setMaximumSize(new Dimension(50, 50));
+        contactInfoImage.setMinimumSize(new Dimension(50, 50));
+        JLabel contactInfoLabel = new JLabel(selectedContact.getName() + "   " + selectedContact.getNumber());
+        Font contactInfoFont = new Font("Arial", Font.PLAIN, 20);
+        contactInfoLabel.setFont(contactInfoFont);
+
+        GridBagConstraints contactInfoAreaConstraints = new GridBagConstraints();
+        contactInfoAreaConstraints.gridx = 0;
+        contactInfoAreaConstraints.gridy = 0;
+        contactInfoAreaConstraints.fill = HEIGHT;
+        contactInfoAreaConstraints.gridwidth = 1;
+        contactInfoAreaConstraints.insets = new Insets(10, 10, 10, 10);
+        contactInfoArea.add(contactInfoImage, contactInfoAreaConstraints);
+        contactInfoAreaConstraints.gridx = 1;
+        contactInfoAreaConstraints.weightx = 1;
+        contactInfoArea.add(contactInfoLabel, contactInfoAreaConstraints);
+        contactInfoArea.setBackground(new Color(200, 191, 166));
+        contactInfoArea.setBorder(BorderFactory.createLineBorder(Color.gray));
+        messageArea.add(contactInfoArea, BorderLayout.NORTH);
 
         JPanel textsPanel = createTexts(selectedContact, window, contactButton);
         JScrollPane scrollPane = new JScrollPane(textsPanel);
@@ -255,8 +298,5 @@ public class MessagePage extends JFrame
             textsPanel.add(textWithPadding);
         }
         return textsPanel;
-    }
-
-    public static void newContactFrame(JFrame window, Tree tree) {
     }
 }

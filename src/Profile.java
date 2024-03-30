@@ -8,20 +8,13 @@ public class Profile {
     private ImageIcon profilePic;
 
     private ImageIcon profilePicScaled;
+    private String pathToProfilePic;
 
-    public Profile(String name, String number, ImageIcon profilePic) {
-        this.name = name;
-        this.number = number;
-        this.profilePic = profilePic;
-        Image scaledImage = profilePic.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-        this.profilePicScaled = new ImageIcon(scaledImage);
-    }
     public Profile(String name, String number) {
         this.name = name;
         this.number = number;
-        this.profilePic = new ImageIcon("src/images/defaultProfilePic.png");
-        Image scaledImage = profilePic.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-        this.profilePicScaled = new ImageIcon(scaledImage);
+        this.pathToProfilePic = "src/images/defaultProfilePic.png";
+        setProfilePic(pathToProfilePic);
     }
 
     public String getName() {
@@ -44,30 +37,40 @@ public class Profile {
         this.number = number;
     }
 
-    public void setProfilePic(ImageIcon profilePic) {
-        this.profilePic = profilePic;
+    public void setProfilePic(String newPathToProfilePic) {
+        this.pathToProfilePic = newPathToProfilePic;
+        ImageIcon unscaledImage = new ImageIcon(pathToProfilePic);
+        Image scaledImage = unscaledImage.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        this.profilePic = new ImageIcon(scaledImage);
+    }
+
+    public String getPathToProfilePic() {
+        return pathToProfilePic;
     }
 
     public ImageIcon getProfilePicScaled() {
+        Image scaledImage = profilePic.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        this.profilePicScaled = new ImageIcon(scaledImage);
         return profilePicScaled;
     }
 
     public void setDefaultProfile(){
         this.name = "John Doe";
         this.number = "1234567890";
-        this.profilePic = new ImageIcon("src/images/defaultProfilePic.png");
-        Image scaledImage = profilePic.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
-        this.profilePicScaled = new ImageIcon(scaledImage);
+        this.pathToProfilePic = "src/images/defaultProfilePic.png";
+        setProfilePic(pathToProfilePic);
     }
 
     public void setProfilePicScaled(ImageIcon profilePicScaled) {
         this.profilePicScaled = profilePicScaled;
     }
 
+
+
     public void saveProfile(){
         try{
             PrintWriter printWriter = new PrintWriter(new FileOutputStream( "files/profile.txt"));
-            printWriter.println(name + "%% 101010PROFILESPLIT010101 %%" + number);
+            printWriter.println(getPathToProfilePic() + "%% 101010PROFILESPLIT010101 %%" + name + "%% 101010PROFILESPLIT010101 %%" + number);
             printWriter.close();
         }catch (IOException e){
             e.printStackTrace();
@@ -82,8 +85,10 @@ public class Profile {
             bufferedReader = new BufferedReader(fileReader);
             while ((nextLine = bufferedReader.readLine()) != null) {
                 String[] contactInfo = nextLine.split("%% 101010PROFILESPLIT010101 %%");
-                this.name = contactInfo[0];
-                this.number = contactInfo[1];
+                this.pathToProfilePic = contactInfo[0];
+                setProfilePic(pathToProfilePic);
+                this.name = contactInfo[1];
+                this.number = contactInfo[2];
             }
         } catch (FileNotFoundException e) {
             System.out.println("Profile file not found, using default profile.");
