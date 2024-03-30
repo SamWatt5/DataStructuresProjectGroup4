@@ -19,6 +19,10 @@ public class Tree {
         root = addRecursive(root, new Contact(contactName, contactNumber));
 
     }
+    public void add(String pathToProfilePic, String contactName, String contactNumber) {
+        root = addRecursive(root, new Contact(pathToProfilePic, contactName, contactNumber));
+
+    }
 
     public void add(Contact contactToAdd) {
         root = addRecursive(root, contactToAdd);
@@ -157,7 +161,7 @@ public class Tree {
     private void saveToFileRecursive(Contact root, PrintWriter printWriter){
         if (root != null) {
             saveToFileRecursive(root.left, printWriter);
-            printWriter.println(root.getName() + "%% 101010CONTACTSPLIT010101 %%" + root.getNumber());
+            printWriter.println(root.getPathToProfilePic()+ "%% 101010CONTACTSPLIT010101 %%" +root.getName() + "%% 101010CONTACTSPLIT010101 %%" + root.getNumber());
             root.getMessages().saveLogToFile();
             saveToFileRecursive(root.right, printWriter);
         }
@@ -173,7 +177,7 @@ public class Tree {
 
             while ((nextLine = bufferedReader.readLine()) != null) {
                 String[] contactInfo = nextLine.split("%% 101010CONTACTSPLIT010101 %%");
-                this.add(contactInfo[0], contactInfo[1]);
+                this.add(contactInfo[0], contactInfo[1], contactInfo[2]);
             }
         } catch (FileNotFoundException e) {
             System.out.println("Contacts file not found, using test contacts.");

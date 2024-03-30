@@ -5,13 +5,13 @@ import java.time.LocalDateTime;
 public class MessagePage extends JFrame
 
 {
-    public static ContactButton selectedContact;
+    public static ContactButton contact;
     private static Tree tree;
     public ContactButton currentContactButton;
 
-    public MessagePage(Tree theTree) //Contact selectedContact)
+    public MessagePage(Tree theTree) //Contact contact)
     {
-        //this.selectedContact = selectedContact.getContactButton();
+        //this.contact = contact.getContactButton();
         tree = theTree;
         createMessagePage(this, tree, null);
     }
@@ -182,8 +182,8 @@ public class MessagePage extends JFrame
         }
     }
 
-    public static void createMessageArea(JFrame window, Contact selectedContact, ContactButton contactButton) {
-        selectedContact.getMessages().printLogToTerminal();
+    public static void createMessageArea(JFrame window, Contact contact, ContactButton contactButton) {
+        contact.getMessages().printLogToTerminal();
         removeComponent(window.getContentPane(), "messageArea");
 
         MessagePanel messageArea = new MessagePanel(new BorderLayout(), "messageArea");
@@ -198,13 +198,69 @@ public class MessagePage extends JFrame
         contactInfoArea.setPreferredSize(new Dimension(messageArea.getWidth(), 50));
 
         JLabel contactInfoImage = new JLabel();
-        contactInfoImage.setIcon(selectedContact.getProfilePicScaled());
+        contactInfoImage.setIcon(contact.getProfilePicScaled());
         contactInfoImage.setPreferredSize(new Dimension(50, 50));
         contactInfoImage.setMaximumSize(new Dimension(50, 50));
         contactInfoImage.setMinimumSize(new Dimension(50, 50));
-        JLabel contactInfoLabel = new JLabel(selectedContact.getName() + "   " + selectedContact.getNumber());
+        
+        JLabel contactInfoLabel = new JLabel(contact.getName() + "   " + contact.getNumber());
         Font contactInfoFont = new Font("Arial", Font.PLAIN, 20);
         contactInfoLabel.setFont(contactInfoFont);
+        
+        JButton editContact = new JButton("Edit Contact");
+        editContact.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JFrame editContactFrame = new JFrame();
+                editContactFrame.setSize(300, 400);
+                editContactFrame.setTitle("Edit Contact");
+                editContactFrame.setLocationRelativeTo(null);
+                editContactFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                editContactFrame.getContentPane().setBackground(new Color(242, 233, 208));
+                editContactFrame.setLayout(null);
+                editContactFrame.setVisible(true);
+
+                JButton contactPicButton = new JButton("Change Contact Picture");
+                JTextField contactName = new JTextField(contact.getName());
+                JTextField contactNumber = new JTextField(contact.getNumber());
+
+                JButton submit = new JButton("Submit");
+                contactPicButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+
+                            FileDialog fileDialog = new FileDialog(editContactFrame, "Choose a file", FileDialog.LOAD);
+                            fileDialog.setVisible(true);
+                            contact.setProfilePic(fileDialog.getDirectory() + fileDialog.getFile());
+
+                        }catch (Exception ex){
+                            ex.printStackTrace();
+                            contact.setProfilePic("src/images/defaultProfilePic.png");
+                        }
+                    }
+                });
+
+                submit.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        contact.setName(contactName.getText());
+                        contact.setNumber(contactNumber.getText());
+                        createMessageArea(window, contact, contactButton);
+                        editContactFrame.dispose();
+                    }
+                });
+
+                contactPicButton.setBounds(50, 50, 200, 30);
+                contactName.setBounds(50, 100, 200, 30);
+                contactNumber.setBounds(50, 150, 200, 30);
+                submit.setBounds(100, 200, 100, 30);
+
+                editContactFrame.add(contactPicButton);
+                editContactFrame.add(contactName);
+                editContactFrame.add(contactNumber);
+                editContactFrame.add(submit);
+
+            }
+
+        });
 
         GridBagConstraints contactInfoAreaConstraints = new GridBagConstraints();
         contactInfoAreaConstraints.gridx = 0;
@@ -216,11 +272,14 @@ public class MessagePage extends JFrame
         contactInfoAreaConstraints.gridx = 1;
         contactInfoAreaConstraints.weightx = 1;
         contactInfoArea.add(contactInfoLabel, contactInfoAreaConstraints);
+        contactInfoAreaConstraints.gridx = 2;
+        contactInfoAreaConstraints.weightx = 0;
+        contactInfoArea.add(editContact, contactInfoAreaConstraints);
         contactInfoArea.setBackground(new Color(200, 191, 166));
         contactInfoArea.setBorder(BorderFactory.createLineBorder(Color.gray));
         messageArea.add(contactInfoArea, BorderLayout.NORTH);
 
-        JPanel textsPanel = createTexts(selectedContact, window, contactButton);
+        JPanel textsPanel = createTexts(contact, window, contactButton);
         JScrollPane scrollPane = new JScrollPane(textsPanel);
         scrollPane.setPreferredSize(new Dimension(messageArea.getWidth(), messageArea.getHeight()-50));
         textsPanel.setBackground(new Color(242, 233, 208));
@@ -236,9 +295,9 @@ public class MessagePage extends JFrame
         sendButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String textToSend = textBox.getText();
-                Message newMessage = new Message(textToSend, selectedContact, true, LocalDateTime.now(),selectedContact.getMessages().getMostRecentMessage().getMessageID()+1);
-                selectedContact.getMessages().insert(newMessage);
-                createMessageArea(window, selectedContact, contactButton);
+                Message newMessage = new Message(textToSend, contact, true, LocalDateTime.now(),contact.getMessages().getMostRecentMessage().getMessageID()+1);
+                contact.getMessages().insert(newMessage);
+                createMessageArea(window, contact, contactButton);
             }
         });
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -256,6 +315,9 @@ public class MessagePage extends JFrame
         window.add(messageArea, gbc);
     }
 
+    public void CreateEditContactPage(Contact contact, JFrame window, Tree tree){
+        
+    }
 
     public static JPanel createTexts(Contact contact, JFrame window, ContactButton contactButton){
 

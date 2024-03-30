@@ -22,6 +22,13 @@ public class Contact {
         setProfilePic(pathToProfilePic);
         messages = new MessageLog(this);
     }
+    public Contact(String pathToProfilePic,String newName, String phoneNumber){
+        name = newName;
+        number = phoneNumber;
+        this.pathToProfilePic = pathToProfilePic;
+        setProfilePic(pathToProfilePic);
+        messages = new MessageLog(this);
+    }
 
     public void setProfilePic(String newPathToProfilePic) {
         this.pathToProfilePic = newPathToProfilePic;
@@ -79,5 +86,13 @@ public class Contact {
 
     public Contact getLeft() {
         return left;
+    }
+
+    public void setName(String newName) {
+        name = newName;
+    }
+
+    public void setNumber(String newNumber) {
+        number = newNumber;
     }
 }
