@@ -14,7 +14,7 @@ public class LandingPage {
 
     /**
      * Main Method, runs the landing page in a new thread
-     * @param args
+     * @param args - command line arguments
      */
     public static void main(String[] args)
     {
