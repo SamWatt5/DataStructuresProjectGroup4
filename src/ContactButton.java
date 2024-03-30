@@ -12,7 +12,7 @@ public class ContactButton extends JButton {
     private JLabel recentMessage = new JLabel();
     private JLabel messageTime = new JLabel();
     private Color buttonColour;
-    public ContactButton(JFrame frame, JPanel newWindow, Contact newContact, Tree tree){
+    public ContactButton(JFrame frame, JPanel newWindow, Contact newContact, Tree tree, Profile profile){
         window = newWindow;
         contact = newContact;
         windowFrame = frame;
@@ -76,7 +76,7 @@ public class ContactButton extends JButton {
                             }
                         }
                     }
-                    openMessagePageWithContact(contact, frame, tree, ContactButton.this);
+                    openMessagePageWithContact(contact, frame, tree, ContactButton.this, profile);
                     }
                 }
             @Override
@@ -99,11 +99,11 @@ public class ContactButton extends JButton {
     }
 
 
-    public void openMessagePageWithContact(Contact contact, JFrame frame, Tree tree, ContactButton contactButton){
+    public void openMessagePageWithContact(Contact contact, JFrame frame, Tree tree, ContactButton contactButton, Profile profile){
 
         if (frame.isVisible() && frame.getName().equals("landingPage")){
             frame.setVisible(false);
-            MessagePage messagePage = new MessagePage(tree);
+            MessagePage messagePage = new MessagePage(tree, profile);
             messagePage.setVisible(true);
             messagePage.createMessageArea(messagePage, contact, contactButton);
         } else {

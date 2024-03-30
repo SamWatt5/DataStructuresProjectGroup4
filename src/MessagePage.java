@@ -8,14 +8,16 @@ public class MessagePage extends JFrame
     public static ContactButton contact;
     private static Tree tree;
     public ContactButton currentContactButton;
+    private Profile profile;
 
-    public MessagePage(Tree theTree) //Contact contact)
+    public MessagePage(Tree theTree, Profile theProfile) //Contact contact)
     {
         //this.contact = contact.getContactButton();
         tree = theTree;
-        createMessagePage(this, tree, null);
+        profile = theProfile;
+        createMessagePage(this, tree, null, theProfile);
     }
-    public static void createMessagePage(JFrame messagePage, Tree tree, ContactButton contactButton)
+    public static void createMessagePage(JFrame messagePage, Tree tree, ContactButton contactButton, Profile profile)
     {
         //Creates and sets up the window
         messagePage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -30,14 +32,14 @@ public class MessagePage extends JFrame
             public void windowClosing(WindowEvent e){
                 tree.saveToFile();
                 //tree.saveContactsMessagesToFile();
-                //profile.saveProfile();
+                profile.saveProfile();
             }
         });
         //Creates the tree and initialises the contacts
 
         //Creates the contact bar and message area
-        createMenuBar(messagePage, tree, contactButton);
-        createContactBar(messagePage, tree, contactButton);
+        createMenuBar(messagePage, tree, contactButton, profile);
+        createContactBar(messagePage, tree, contactButton, profile);
         createMessageArea(messagePage, tree.getRoot(), contactButton);
 
         //Displays the window
@@ -45,7 +47,7 @@ public class MessagePage extends JFrame
 
     }
 
-    public static void createMenuBar(JFrame window, Tree tree, ContactButton contactButton){
+    public static void createMenuBar(JFrame window, Tree tree, ContactButton contactButton, Profile profile){
         JMenuBar menuBar = new JMenuBar();
         JButton home = new JButton("Home");
         JMenu contacts = new JMenu("Contacts");
@@ -54,12 +56,12 @@ public class MessagePage extends JFrame
         JMenuItem deleteContact = new JMenuItem("Delete Contact");
         newContact.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                newContactFrame(window, tree, contactButton);
+                newContactFrame(window, tree, contactButton, profile);
             }
         });
         deleteContact.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                deleteContactFrame(window, tree, contactButton);
+                deleteContactFrame(window, tree, contactButton, profile);
             }
         });
         home.addActionListener(new ActionListener() {
@@ -77,7 +79,7 @@ public class MessagePage extends JFrame
 
     }
 
-    public static void deleteContactFrame(JFrame window, Tree tree, ContactButton contactButton){
+    public static void deleteContactFrame(JFrame window, Tree tree, ContactButton contactButton, Profile profile){
         JFrame deleteContactFrame = new JFrame();
         deleteContactFrame.setSize(300, 400);
         deleteContactFrame.setTitle("Delete Contact");
@@ -91,7 +93,7 @@ public class MessagePage extends JFrame
         submit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 tree.deleteContact(contactName.getText());
-                createContactBar(window, tree, contactButton);
+                createContactBar(window, tree, contactButton, profile);
                 deleteContactFrame.dispose();
             }
         });
@@ -101,7 +103,7 @@ public class MessagePage extends JFrame
         deleteContactFrame.add(submit);
     }
 
-    public static void newContactFrame(JFrame window, Tree tree, ContactButton contactButton){
+    public static void newContactFrame(JFrame window, Tree tree, ContactButton contactButton, Profile profile){
         JFrame newContactFrame = new JFrame();
         newContactFrame.setSize(300, 400);
         newContactFrame.setTitle("New Contact");
@@ -119,7 +121,7 @@ public class MessagePage extends JFrame
                 newContact.getMessages().generateTestMessages();
                 tree.add(newContact);
                 removeComponent(window.getContentPane(), "contactBar");
-                createContactBar(window, tree, contactButton);
+                createContactBar(window, tree, contactButton, profile);
                 window.revalidate();
                 window.repaint();
                 window.getContentPane().revalidate();
@@ -144,7 +146,7 @@ public class MessagePage extends JFrame
         newContactFrame.add(submit);
     }
 
-    public static void createContactBar(JFrame window, Tree tree, ContactButton contactButton){
+    public static void createContactBar(JFrame window, Tree tree, ContactButton contactButton, Profile profile){
         removeComponent(window.getContentPane(), "contactBar");
         JPanel contactBar = new JPanel();
         contactBar.setName("contactBar");
@@ -153,7 +155,7 @@ public class MessagePage extends JFrame
         if (contactButton != null) {
             contactButton.setButtonColour(new Color(242, 233, 208));
         }
-        tree.addInOrder(tree.getRoot(), contactBar, window);
+        tree.addInOrder(tree.getRoot(), contactBar, window, profile);
 
 
         JScrollPane scrollPane = new JScrollPane(contactBar);

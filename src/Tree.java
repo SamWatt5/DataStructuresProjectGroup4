@@ -124,25 +124,25 @@ public class Tree {
 
     }
 
-    public void addInOrder(Contact current, JPanel contactBar, JFrame frame) {
+    public void addInOrder(Contact current, JPanel contactBar, JFrame frame, Profile profile) {
         if (current != null) {
-            addInOrder(current.getLeft(), contactBar, frame);
+            addInOrder(current.getLeft(), contactBar, frame, profile);
             System.out.println(current.getName() + " " + current.getMessages().getMostRecentMessage().getTimeSentFormatted());
 
-            ContactButton contactButton = new ContactButton(frame, contactBar, current, this);
+            ContactButton contactButton = new ContactButton(frame, contactBar, current, this, profile);
             current.setContactButton(contactButton);
             contactBar.add(contactButton);
-            addInOrder(current.getRight(), contactBar, frame);
+            addInOrder(current.getRight(), contactBar, frame, profile);
         }
     }
 
-    public void addContactsTocontactBar(Contact contact, JPanel contactBar, JFrame frame) {
+    public void addContactsTocontactBar(Contact contact, JPanel contactBar, JFrame frame, Profile profile) {
         if (contact != null) {
-            addContactsTocontactBar(contact.right, contactBar, frame);
-            ContactButton contactButton = new ContactButton(frame, contactBar, contact, this);
+            addContactsTocontactBar(contact.right, contactBar, frame, profile);
+            ContactButton contactButton = new ContactButton(frame, contactBar, contact, this, profile);
             contact.setContactButton(contactButton);
             contactBar.add(contactButton);
-            addContactsTocontactBar(contact.left, contactBar, frame);
+            addContactsTocontactBar(contact.left, contactBar, frame, profile);
         }
     }
 

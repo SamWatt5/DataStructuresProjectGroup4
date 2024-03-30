@@ -304,12 +304,13 @@ public class LandingPage extends JFrame {
 
     public static void createContactBar(JFrame window, Tree tree){
         removeComponent(window.getContentPane(), "contactBar");
+
         JPanel contactBar = new JPanel();
         contactBar.setName("contactBar");
         contactBar.setLayout(new BoxLayout(contactBar, BoxLayout.Y_AXIS));
         contactBar.setBackground(new Color(242, 233, 208));
 
-        tree.addInOrder(tree.getRoot(), contactBar, window);
+        tree.addInOrder(tree.getRoot(), contactBar, window, profile);
 
 
         JScrollPane scrollPane = new JScrollPane(contactBar);
