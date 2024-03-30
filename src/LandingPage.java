@@ -132,7 +132,7 @@ public class LandingPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 JFrame profileFrame = new JFrame();
                 profileFrame.setSize(300, 400);
-                profileFrame.setTitle("New Contact");
+                profileFrame.setTitle("Edit Profile");
                 profileFrame.setLocationRelativeTo(null);
                 profileFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 profileFrame.getContentPane().setBackground(new Color(242, 233, 208));
