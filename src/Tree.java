@@ -1,25 +1,51 @@
 import javax.swing.*;
 import java.io.*;
 
+/**
+ * Binary tree of contacts
+ */
 public class Tree {
     private Contact root;
     private Boolean sortedAlphabetically;
     //Tree tree = new Tree();
 
+    /**
+     * Constructor for the tree
+     * @param alphabetical whether the tree should be sorted alphabetically (UNUSED)
+     */
     public Tree(Boolean alphabetical) {
         this.root = null;
         this.sortedAlphabetically = alphabetical;
     }
 
+    /**
+     * Adds a contact to the tree
+     * @param contactName name of the contact
+     * @param contactNumber phone number of the contact
+     * @param ID - unique ID of the contact
+     */
     public void add(String contactName, String contactNumber, int ID) {
         root = addRecursive(root, new Contact(contactName, contactNumber, ID));
 
     }
+
+    /**
+     * Adds a contact to the tree, with a profile picture
+     * @param pathToProfilePic - the file path to the profile picture of the contact
+     * @param contactName - name of the contact
+     * @param contactNumber - phone number of the contact
+     * @param ID - unique ID of the contact
+     */
     public void add(String pathToProfilePic, String contactName, String contactNumber, int ID) {
         root = addRecursive(root, new Contact(pathToProfilePic, contactName, contactNumber, ID));
 
     }
 
+    /**
+     * Finds the highest ID in the tree, used to generate new IDs
+     * @param root - the root of the tree
+     * @return the highest ID in the tree
+     */
     public int findHighestID(Contact root) {
         boolean found = false;
         Contact current = root;
@@ -33,12 +59,21 @@ public class Tree {
         return current.getID();
     }
 
+    /**
+     * Adds a contact to the tree
+     * @param contactToAdd - the contact to add
+     */
     public void add(Contact contactToAdd) {
         root = addRecursive(root, contactToAdd);
 
     }
 
-
+    /**
+     * Recursively adds a contact to the tree
+     * @param current - the current contact
+     * @param contactToAdd - the contact to add
+     * @return the current contact
+     */
     public Contact addRecursive(Contact current, Contact contactToAdd) {
         if (current == null) {
             return contactToAdd;
@@ -53,11 +88,21 @@ public class Tree {
         return current;
     }
 
+    /**
+     * Deletes a contact from the tree
+     * @param contactName - the name of the contact to delete
+     */
     public void deleteContact(String contactName) {
         Contact contactToDelete = search(contactName);
         root = deleteContactRecursive(root,  contactToDelete);
     }
 
+    /**
+     * Recursively deletes a contact from the tree
+     * @param current - the current contact
+     * @param contactToDelete - the contact to delete
+     * @return the current contact
+     */
     private Contact deleteContactRecursive(Contact current, Contact contactToDelete) {
         if (current == null) {
             return null;
@@ -85,6 +130,11 @@ public class Tree {
         return current;
     }
 
+    /**
+     * Finds the contact with the lowest ID in the tree, used for deleting contacts
+     * @param root - the root of the tree
+     * @return the contact with the lowest ID
+     */
     public Contact findLowestID(Contact root) {
         while (root.getLeft() != null) {
             root = root.getLeft();
@@ -92,6 +142,11 @@ public class Tree {
         return root;
     }
 
+    /**
+     * Searches for a contact in the tree
+     * @param contactName - the name of the contact to search for
+     * @return the contact, or null
+     */
     public Contact search(String contactName) {
         return searchRecursive(root, contactName);
     }
@@ -110,6 +165,9 @@ public class Tree {
         return searchRecursive(current.getRight(), contactName);
     }
 
+    /**
+     * Initialises test contacts
+     */
     public void initialiseContacts() {
         //Tree tree = new Tree();
         this.add("Sam", "07123456789", 0);
@@ -118,10 +176,22 @@ public class Tree {
         this.add("Ruairidh", "666", 3);
         this.add("Jesus", "8008135", 4);
     }
+
+    /**
+     * Gets the root of the tree
+     * @return the root of the tree
+     */
     public Contact getRoot() {
         return root;
     }
 
+    /**
+     * Adds contacts to the contact bar in order
+     * @param current - the current contact
+     * @param contactBar - the contact bar
+     * @param frame - the window to add the contacts to
+     * @param profile - the profile of the user
+     */
     public void addInOrder(Contact current, JPanel contactBar, JFrame frame, Profile profile) {
         if (current != null) {
             addInOrder(current.getLeft(), contactBar, frame, profile);
@@ -134,6 +204,9 @@ public class Tree {
         }
     }
 
+    /**
+     * Saves the contacts to a file
+     */
     public void saveToFile() {
         try {
             PrintWriter printWriter1 = new PrintWriter(new FileOutputStream("files/contacts.txt", false));
@@ -145,6 +218,11 @@ public class Tree {
         }
     }
 
+    /**
+     * Recursively saves the contacts to a file
+     * @param root - the root of the tree
+     * @param printWriter - the print writer being used
+     */
     private void saveToFileRecursive(Contact root, PrintWriter printWriter){
         if (root != null) {
             saveToFileRecursive(root.left, printWriter);
@@ -155,6 +233,10 @@ public class Tree {
         }
     }
 
+    /**
+     * Loads contacts from a file and saves them to the tree
+     * if empty, uses test contacts
+     */
     public void loadFromFile() {
         FileReader fileReader;
         BufferedReader bufferedReader = null;
@@ -175,11 +257,20 @@ public class Tree {
 
     }
 
+    /**
+     * Gets the contacts in the tree in array form
+     * @return the contacts in the tree
+     */
     public Contact[] getContacts() {
         Contact[] contacts = getContactsRecursive(root);
         return contacts;
     }
 
+    /**
+     * Recursively gets the contacts in the tree in array form
+     * @param current - the current contact
+     * @return the contacts in the tree in array form
+     */
     private Contact[] getContactsRecursive(Contact current) {
         if (current == null){
             return new Contact[0];
