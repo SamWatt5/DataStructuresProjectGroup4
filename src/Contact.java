@@ -11,20 +11,23 @@ public class Contact {
     private ImageIcon profilePic;
     private ImageIcon profilePicScaled;
     private String pathToProfilePic;
+    private int ID;
     public Contact(){
         messages = new MessageLog(this);
         name = "";
     }
-    public Contact(String newName, String phoneNumber){
+    public Contact(String newName, String phoneNumber, int newID){
         name = newName;
         number = phoneNumber;
+        ID = newID;
         pathToProfilePic = "src/images/defaultProfilePic.png";
         setProfilePic(pathToProfilePic);
         messages = new MessageLog(this);
     }
-    public Contact(String pathToProfilePic,String newName, String phoneNumber){
+    public Contact(String pathToProfilePic,String newName, String phoneNumber, int newID){
         name = newName;
         number = phoneNumber;
+        ID = newID;
         this.pathToProfilePic = pathToProfilePic;
         setProfilePic(pathToProfilePic);
         messages = new MessageLog(this);
@@ -52,6 +55,13 @@ public class Contact {
         return name;
     }
 
+    public int getID(){
+        return ID;
+    }
+    public void setID(int newID){
+        ID = newID;
+    }
+
     public void setContactButton(ContactButton contactButton) {
         this.contactButton = contactButton;
     }
@@ -70,6 +80,10 @@ public class Contact {
 
     public MessageLog getMessages() {
         return messages;
+    }
+
+    public void setMessages(MessageLog newMessages){
+        messages = newMessages;
     }
 
     public void setLeft(Contact contact) {

@@ -1,16 +1,21 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.time.LocalDateTime;
 
 import static java.awt.GridBagConstraints.*;
 
-public class LandingPage extends JFrame {
+/**
+ * Landing page for the application
+ */
+public class LandingPage {
 
     private static Profile profile;
+
+    /**
+     * Main Method, runs the landing page in a new thread
+     * @param args
+     */
     public static void main(String[] args)
     {
         SwingUtilities.invokeLater(new Runnable()
@@ -22,10 +27,10 @@ public class LandingPage extends JFrame {
         });
 
     }
-    public LandingPage(){
-        createLandingPage();
-    }
 
+    /**
+     * Creates the landing page for the program
+     */
     public static void createLandingPage(){
         JFrame window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -43,6 +48,11 @@ public class LandingPage extends JFrame {
         //tree.loadContactsMessagesFromFile();
         profile.loadProfile();
         window.addWindowListener(new WindowAdapter(){
+
+            /**
+             * When the window is closed, tree, messages and profile are saved to files
+             * @param e the event to be processed
+             */
             public void windowClosing(WindowEvent e){
                 tree.saveToFile();
                 //tree.saveContactsMessagesToFile();
@@ -55,6 +65,10 @@ public class LandingPage extends JFrame {
         window.setVisible(true);
     }
 
+    /**
+     * Creates the landing page, for use when the going back to landing page from message page
+     * @param tree - the binary tree of contacts being used
+     */
     public static void createLandingPage(Tree tree){
         JFrame window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -80,7 +94,11 @@ public class LandingPage extends JFrame {
     }
 
 
-
+    /**
+     * creates the buttons in the main area of the landing page
+     * @param window - the JFrame that the buttons are being added to
+     * @param tree - the contact binary tree being used
+     */
     public static void createButtons(JFrame window, Tree tree){
         removeComponent(window.getContentPane(), "mainArea");
         LandingPageMainPanel mainArea = new LandingPageMainPanel(new BorderLayout(), "mainArea");
@@ -105,7 +123,7 @@ public class LandingPage extends JFrame {
         GridBagConstraints profileAreaConstraints = new GridBagConstraints();
         profileAreaConstraints.gridx = 0;
         profileAreaConstraints.gridy = 0;
-        profileAreaConstraints.fill = HEIGHT;
+        profileAreaConstraints.fill = VERTICAL;
         profileAreaConstraints.gridwidth = 1;
         profileAreaConstraints.insets = new Insets(10, 10, 10, 10);
         profileArea.add(profileImage, profileAreaConstraints);
@@ -114,8 +132,6 @@ public class LandingPage extends JFrame {
         profileArea.add(profileLabel, profileAreaConstraints);
         profileArea.setBackground(new Color(200, 191, 166));
         profileArea.setBorder(BorderFactory.createLineBorder(Color.gray));
-        //profileArea.setPreferredSize(new Dimension(mainArea.getWidth(), 50));
-
 
         JPanel buttonArea = new JPanel();
         buttonArea.setLayout(new GridBagLayout());
@@ -128,6 +144,10 @@ public class LandingPage extends JFrame {
         viewProfileButton.setBorder(BorderFactory.createLineBorder(Color.gray));
         viewProfileButton.setBackground(new Color(242, 233, 208));
         viewProfileButton.addActionListener(new ActionListener() {
+            /**
+             * when viewProfileButton pressed, opens new window allowing the user to edit profile
+             * @param e - actionEvent
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFrame profileFrame = new JFrame();
@@ -145,6 +165,11 @@ public class LandingPage extends JFrame {
 
                 JButton submit = new JButton("Submit");
                 profilePicButton.addActionListener(new ActionListener() {
+
+                    /**
+                     * When the profilePic button is pressed, it opens a file dialog to allow user to choose a new profile picture
+                     * @param e
+                     */
                     public void actionPerformed(ActionEvent e) {
                         try {
 
@@ -189,6 +214,10 @@ public class LandingPage extends JFrame {
         newContactButton.setBorder(BorderFactory.createLineBorder(Color.gray));
         newContactButton.setBackground(new Color(242, 233, 208));
         newContactButton.addActionListener(new ActionListener() {
+            /**
+             * When newContactButton pressed, opens new window allowing the user to add a new contact
+             * @param e
+             */
             @Override
             public void actionPerformed(ActionEvent e) {
                 newContactFrame(window, tree);
@@ -252,7 +281,10 @@ public class LandingPage extends JFrame {
     }
 
 
-
+    /**
+     * opens a new window allowing the user to search for a message containg a keyword
+     * @param tree - the binary tree being searched through
+     */
     public static void searchForMessage(Tree tree){
         JFrame searchFrame = new JFrame();
         searchFrame.setSize(300, 400);
@@ -277,6 +309,11 @@ public class LandingPage extends JFrame {
         searchFrame.add(submit);
     }
 
+    /**
+     * opens a new window displaying the search results
+     * @param searchTerm - the word being searched for
+     * @param tree - The tree being searched
+     */
     public static void searchResultsFrame(String searchTerm, Tree tree){
         JFrame searchResultsFrame = new JFrame();
         searchResultsFrame.setSize(300, 400);
@@ -291,8 +328,17 @@ public class LandingPage extends JFrame {
             if (contact != null) {
                 for (Message message : contact.getMessages().getMessagesInArray()) {
                     if (message.getMessageText().toUpperCase().contains(searchTerm.toUpperCase())) {
-                        JLabel result = new JLabel(contact.getName() + ": " + message.getMessageText());
+                        JButton result = new JButton(contact.getName() + ": " + message.getMessageText());
                         result.setBounds(50, y, 200, 30);
+                        result.setBackground(new Color(242, 233, 208));
+                        result.setBorder(new EmptyBorder(0, 0, 0, 0));
+                        result.addActionListener(new ActionListener() {
+                            public void actionPerformed(ActionEvent e) {
+                                MessagePage messagePage = new MessagePage(tree, profile);
+                                messagePage.setVisible(true);
+                                messagePage.createMessageArea(messagePage, contact);
+                            }
+                        });
                         searchResultsFrame.add(result);
                         y += 50;
                     }
@@ -301,7 +347,11 @@ public class LandingPage extends JFrame {
         }
     }
 
-
+    /**
+     * Creates the bar of contact buttons on the left of the window.
+     * @param window - the window being added to
+     * @param tree - the tree of contacts being added
+     */
     public static void createContactBar(JFrame window, Tree tree){
         removeComponent(window.getContentPane(), "contactBar");
 
@@ -324,6 +374,12 @@ public class LandingPage extends JFrame {
         gbc.fill = GridBagConstraints.VERTICAL;
         window.add(scrollPane, gbc);
     }
+
+    /**
+     * Creates a new window allowing the user to add a new contact
+     * @param window - the window that created the new window
+     * @param tree - the tree of contacts being added to
+     */
     public static void newContactFrame(JFrame window, Tree tree){
         JFrame newContactFrame = new JFrame();
         newContactFrame.setSize(300, 400);
@@ -338,7 +394,7 @@ public class LandingPage extends JFrame {
         JButton submit = new JButton("Submit");
         submit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Contact newContact = new Contact(contactName.getText(), contactNumber.getText());
+                Contact newContact = new Contact(contactName.getText(), contactNumber.getText(), tree.findHighestID(tree.getRoot())+1);
                 newContact.getMessages().generateTestMessages();
                 tree.add(newContact);
                 removeComponent(window.getContentPane(), "contactBar");
@@ -358,6 +414,11 @@ public class LandingPage extends JFrame {
         newContactFrame.add(submit);
     }
 
+    /**
+     * recursively removes a component from a window
+     * @param container - the window or container being removed from
+     * @param name - the name of the item being removed
+     */
     public static void removeComponent(Container container, String name){
         for (Component component : container.getComponents()) {
             if (name.equals(component.getName())) {

@@ -76,7 +76,7 @@ public class ContactButton extends JButton {
                             }
                         }
                     }
-                    openMessagePageWithContact(contact, frame, tree, ContactButton.this, profile);
+                    openMessagePageWithContact(contact, frame, tree, profile);
                     }
                 }
             @Override
@@ -99,15 +99,15 @@ public class ContactButton extends JButton {
     }
 
 
-    public void openMessagePageWithContact(Contact contact, JFrame frame, Tree tree, ContactButton contactButton, Profile profile){
+    public void openMessagePageWithContact(Contact contact, JFrame frame, Tree tree, Profile profile){
 
         if (frame.isVisible() && frame.getName().equals("landingPage")){
             frame.setVisible(false);
             MessagePage messagePage = new MessagePage(tree, profile);
             messagePage.setVisible(true);
-            messagePage.createMessageArea(messagePage, contact, contactButton);
+            messagePage.createMessageArea(messagePage, contact);
         } else {
-            MessagePage.createMessageArea(frame, contact, contactButton);
+            MessagePage.createMessageArea(frame, contact);
         }
         frame.revalidate();
         frame.repaint();

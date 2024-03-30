@@ -6,7 +6,7 @@ import java.awt.event.*;
 public class DeleteButton extends JButton {
     private int message;
     private Contact contact;
-    public DeleteButton(Contact contact, int messageID, JFrame window, ContactButton contactButton){
+    public DeleteButton(Contact contact, int messageID, JFrame window){
         setPreferredSize(new Dimension(30, 30));
         setMaximumSize(new Dimension(Integer.MAX_VALUE, getPreferredSize().height));
         setBackground(new Color(242, 233, 208));
@@ -21,7 +21,7 @@ public class DeleteButton extends JButton {
             @Override
             public void actionPerformed(ActionEvent e) {
                 contact.getMessages().deleteMessage(messageID);
-                MessagePage.createMessageArea(window, contact, contactButton);
+                MessagePage.createMessageArea(window, contact);
             }
         });
     }

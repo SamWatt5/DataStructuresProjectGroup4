@@ -1,9 +1,5 @@
 import javax.swing.*;
 import java.io.*;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.stream.Stream;
 
 public class Tree {
     private Contact root;
@@ -15,13 +11,26 @@ public class Tree {
         this.sortedAlphabetically = alphabetical;
     }
 
-    public void add(String contactName, String contactNumber) {
-        root = addRecursive(root, new Contact(contactName, contactNumber));
+    public void add(String contactName, String contactNumber, int ID) {
+        root = addRecursive(root, new Contact(contactName, contactNumber, ID));
 
     }
-    public void add(String pathToProfilePic, String contactName, String contactNumber) {
-        root = addRecursive(root, new Contact(pathToProfilePic, contactName, contactNumber));
+    public void add(String pathToProfilePic, String contactName, String contactNumber, int ID) {
+        root = addRecursive(root, new Contact(pathToProfilePic, contactName, contactNumber, ID));
 
+    }
+
+    public int findHighestID(Contact root) {
+        boolean found = false;
+        Contact current = root;
+        do {
+            if (current.getRight() != null){
+                current = current.getRight();
+            }else {
+                found = true;
+            }
+        }while (!found);
+        return current.getID();
     }
 
     public void add(Contact contactToAdd) {
@@ -34,9 +43,9 @@ public class Tree {
         if (current == null) {
             return contactToAdd;
         }
-        if (contactToAdd.getMessages().getMostRecentMessage().getTimeSent().isAfter(current.getMessages().getMostRecentMessage().getTimeSent())) {
+        if (contactToAdd.getID() < current.getID()) {
             current.setLeft(addRecursive(current.getLeft(), contactToAdd));
-        } else if (contactToAdd.getMessages().getMostRecentMessage().getTimeSent().isBefore(current.getMessages().getMostRecentMessage().getTimeSent())) {
+        } else if (contactToAdd.getID() > current.getID()) {
             current.setRight(addRecursive(current.getRight(), contactToAdd));
         } else {
             return current;
@@ -45,83 +54,72 @@ public class Tree {
     }
 
     public void deleteContact(String contactName) {
-        root = deleteContact(root, contactName);
+        Contact contactToDelete = search(contactName);
+        root = deleteContactRecursive(root,  contactToDelete);
     }
 
-    public Contact deleteContact(Contact current, String contactName) {
+    private Contact deleteContactRecursive(Contact current, Contact contactToDelete) {
         if (current == null) {
-            return current;
+            return null;
         }
-        if (contactName.compareTo(current.getName()) < 0) {
-            current.setLeft(deleteContact(current.getLeft(), contactName));
-        } else if (contactName.compareTo(current.getName()) > 0) {
-            current.setRight(deleteContact(current.getRight(), contactName));
-        } else {
-            if (current.getLeft() == null) {
+        if (contactToDelete.getID() < current.getID()) {
+            current.setLeft(deleteContactRecursive(current.getLeft(), contactToDelete));
+        } else if (contactToDelete.getID() > current.getID()) {
+            current.setRight(deleteContactRecursive(current.getRight(), contactToDelete));
+        }else {
+
+            if (current.getLeft() == null && current.getRight() == null){
+                return null;
+            }else if (current.getLeft() == null){
                 return current.getRight();
-            } else if (current.getRight() == null) {
+            }else if(current.getRight() == null){
                 return current.getLeft();
             }
-            current.setRight(minValueContact(current.getRight()));
-            current.setRight(deleteContact(current.getRight(), current.getName()));
+            Contact inorderSuccessor = findLowestID(current.getRight());
+            current.setName(inorderSuccessor.getName());
+            current.setNumber(inorderSuccessor.getNumber());
+            current.setID(inorderSuccessor.getID());
+            current.setMessages(inorderSuccessor.getMessages());
+            current.setRight(deleteContactRecursive(current.getRight(), inorderSuccessor));
         }
         return current;
     }
 
-    public Contact minValueContact(Contact current) {
-        Contact min = current;
-        while (current.getLeft() != null) {
-            min = current.getLeft();
-            current = current.getLeft();
+    public Contact findLowestID(Contact root) {
+        while (root.getLeft() != null) {
+            root = root.getLeft();
         }
-        return min;
+        return root;
+    }
+
+    public Contact search(String contactName) {
+        return searchRecursive(root, contactName);
+    }
+
+    private Contact searchRecursive(Contact current, String contactName) {
+        if (current == null) {
+            return null;
+        }
+        if (current.getName().toUpperCase().equals(contactName.toUpperCase())) {
+            return current;
+        }
+        Contact leftSearch = searchRecursive(current.getLeft(), contactName);
+        if (leftSearch != null) {
+            return leftSearch;
+        }
+        return searchRecursive(current.getRight(), contactName);
     }
 
     public void initialiseContacts() {
         //Tree tree = new Tree();
-        this.add("Sam", "07123456789");
-        this.add("Jonah", "07987654321");
-        this.add("Harrison", "01312345678");
-        this.add("Ruairidh", "666");
-        this.add("Jesus", "8008135");
+        this.add("Sam", "07123456789", 0);
+        this.add("Jonah", "07987654321", 1);
+        this.add("Harrison", "01312345678", 2);
+        this.add("Ruairidh", "666", 3);
+        this.add("Jesus", "8008135", 4);
     }
-
-    public void addNewContact() {
-        String contactName = getContactName();
-        String contactNumber = getContactNumber();
-
-        this.add(contactName, contactNumber);
-
-    }
-
-    public String getContactName() {
-        Scanner s = new Scanner(System.in);
-        String contactName = s.nextLine();
-
-        return contactName;
-    }
-
-    public String getContactNumber() {
-        Scanner s = new Scanner(System.in);
-        String contactNum = s.nextLine();
-
-        return contactNum;
-    }
-
     public Contact getRoot() {
         return root;
-    }
-
-    public void saveContactsMessagesToFile() {
-        saveContactsMessagesToFileRecursive(root);
-    }
-    public void saveContactsMessagesToFileRecursive(Contact current) {
-        if (current != null) {
-            saveContactsMessagesToFileRecursive(current.getLeft());
-            current.getMessages().saveLogToFile();
-            saveContactsMessagesToFileRecursive(current.getRight());
-        }
-
     }
 
     public void addInOrder(Contact current, JPanel contactBar, JFrame frame, Profile profile) {
@@ -135,17 +133,6 @@ public class Tree {
             addInOrder(current.getRight(), contactBar, frame, profile);
         }
     }
-
-    public void addContactsTocontactBar(Contact contact, JPanel contactBar, JFrame frame, Profile profile) {
-        if (contact != null) {
-            addContactsTocontactBar(contact.right, contactBar, frame, profile);
-            ContactButton contactButton = new ContactButton(frame, contactBar, contact, this, profile);
-            contact.setContactButton(contactButton);
-            contactBar.add(contactButton);
-            addContactsTocontactBar(contact.left, contactBar, frame, profile);
-        }
-    }
-
 
     public void saveToFile() {
         try {
@@ -161,14 +148,15 @@ public class Tree {
     private void saveToFileRecursive(Contact root, PrintWriter printWriter){
         if (root != null) {
             saveToFileRecursive(root.left, printWriter);
-            printWriter.println(root.getPathToProfilePic()+ "%% 101010CONTACTSPLIT010101 %%" +root.getName() + "%% 101010CONTACTSPLIT010101 %%" + root.getNumber());
+            String regex = "%% 101010CONTACTSPLIT010101 %%";
+            printWriter.println(root.getPathToProfilePic()+ regex + root.getName() + regex + root.getNumber()+ regex + root.getID());
             root.getMessages().saveLogToFile();
             saveToFileRecursive(root.right, printWriter);
         }
     }
 
     public void loadFromFile() {
-        FileReader fileReader = null;
+        FileReader fileReader;
         BufferedReader bufferedReader = null;
         String nextLine;
         try {
@@ -177,28 +165,18 @@ public class Tree {
 
             while ((nextLine = bufferedReader.readLine()) != null) {
                 String[] contactInfo = nextLine.split("%% 101010CONTACTSPLIT010101 %%");
-                this.add(contactInfo[0], contactInfo[1], contactInfo[2]);
+                this.add(contactInfo[0], contactInfo[1], contactInfo[2], Integer.parseInt(contactInfo[3]));
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("Contacts file not found, using test contacts.");
+
+        } catch (Exception e) {
+            System.out.println("There was a problem opening contacts file, using test contacts.");
             initialiseContacts();
-        } catch (IOException e) {
-            System.out.println("There is a problem opening or reading from the file");
-            initialiseContacts();
-        } finally {
-            if (bufferedReader != null) {
-                try {
-                    bufferedReader.close();
-                } catch (IOException e) {
-                    System.out.println("File was not properly opened. Using test contacts.");
-                    initialiseContacts();
-                }
-            }
         }
+
     }
 
     public Contact[] getContacts() {
-        Contact contacts[] = getContactsRecursive(root);
+        Contact[] contacts = getContactsRecursive(root);
         return contacts;
     }
 
@@ -219,15 +197,4 @@ public class Tree {
         return result;
     }
 
-    public void loadContactsMessagesFromFile() {
-        loadContactsMessagesFromFileRecursive(root);
-    }
-
-    private void loadContactsMessagesFromFileRecursive(Contact root) {
-        if (root != null) {
-            loadContactsMessagesFromFileRecursive(root.left);
-            root.getMessages().loadFromFile();
-            loadContactsMessagesFromFileRecursive(root.right);
-        }
-    }
 }

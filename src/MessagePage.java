@@ -7,7 +7,6 @@ public class MessagePage extends JFrame
 {
     public static ContactButton contact;
     private static Tree tree;
-    public ContactButton currentContactButton;
     private Profile profile;
 
     public MessagePage(Tree theTree, Profile theProfile) //Contact contact)
@@ -40,7 +39,7 @@ public class MessagePage extends JFrame
         //Creates the contact bar and message area
         createMenuBar(messagePage, tree, contactButton, profile);
         createContactBar(messagePage, tree, contactButton, profile);
-        createMessageArea(messagePage, tree.getRoot(), contactButton);
+        createMessageArea(messagePage, tree.getRoot());
 
         //Displays the window
         messagePage.setVisible(true);
@@ -93,7 +92,7 @@ public class MessagePage extends JFrame
         submit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 tree.deleteContact(contactName.getText());
-                createContactBar(window, tree, contactButton, profile);
+                createMessagePage(window, tree, contactButton, profile);
                 deleteContactFrame.dispose();
             }
         });
@@ -117,7 +116,7 @@ public class MessagePage extends JFrame
         JButton submit = new JButton("Submit");
         submit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Contact newContact = new Contact(contactName.getText(), contactNumber.getText());
+                Contact newContact = new Contact(contactName.getText(), contactNumber.getText(), tree.findHighestID(tree.getRoot()) + 1);
                 newContact.getMessages().generateTestMessages();
                 tree.add(newContact);
                 removeComponent(window.getContentPane(), "contactBar");
@@ -184,7 +183,7 @@ public class MessagePage extends JFrame
         }
     }
 
-    public static void createMessageArea(JFrame window, Contact contact, ContactButton contactButton) {
+    public static void createMessageArea(JFrame window, Contact contact) {
         contact.getMessages().printLogToTerminal();
         removeComponent(window.getContentPane(), "messageArea");
 
@@ -245,7 +244,7 @@ public class MessagePage extends JFrame
                     public void actionPerformed(ActionEvent e) {
                         contact.setName(contactName.getText());
                         contact.setNumber(contactNumber.getText());
-                        createMessageArea(window, contact, contactButton);
+                        createMessageArea(window, contact);
                         editContactFrame.dispose();
                     }
                 });
@@ -281,7 +280,7 @@ public class MessagePage extends JFrame
         contactInfoArea.setBorder(BorderFactory.createLineBorder(Color.gray));
         messageArea.add(contactInfoArea, BorderLayout.NORTH);
 
-        JPanel textsPanel = createTexts(contact, window, contactButton);
+        JPanel textsPanel = createTexts(contact, window);
         JScrollPane scrollPane = new JScrollPane(textsPanel);
         scrollPane.setPreferredSize(new Dimension(messageArea.getWidth(), messageArea.getHeight()-50));
         textsPanel.setBackground(new Color(242, 233, 208));
@@ -299,7 +298,7 @@ public class MessagePage extends JFrame
                 String textToSend = textBox.getText();
                 Message newMessage = new Message(textToSend, contact, true, LocalDateTime.now(),contact.getMessages().getMostRecentMessage().getMessageID()+1);
                 contact.getMessages().insert(newMessage);
-                createMessageArea(window, contact, contactButton);
+                createMessageArea(window, contact);
             }
         });
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -321,7 +320,7 @@ public class MessagePage extends JFrame
         
     }
 
-    public static JPanel createTexts(Contact contact, JFrame window, ContactButton contactButton){
+    public static JPanel createTexts(Contact contact, JFrame window){
 
         JPanel textsPanel = new JPanel();
         textsPanel.setLayout(new BoxLayout(textsPanel, BoxLayout.Y_AXIS));
@@ -345,10 +344,10 @@ public class MessagePage extends JFrame
                 text.setBackground(Color.cyan);
                 textWithPadding.setLayout(new FlowLayout(FlowLayout.RIGHT));
                 textWithPadding.add(text);
-                DeleteButton deleteButton = new DeleteButton(contact, messageLog.getMessageFromIndex(i).getMessageID(), window, contactButton);
+                DeleteButton deleteButton = new DeleteButton(contact, messageLog.getMessageFromIndex(i).getMessageID(), window);
                 textWithPadding.add(deleteButton);
             }else{
-                DeleteButton deleteButton = new DeleteButton(contact, messageLog.getMessageFromIndex(i).getMessageID(), window, contactButton);
+                DeleteButton deleteButton = new DeleteButton(contact, messageLog.getMessageFromIndex(i).getMessageID(), window);
                 textWithPadding.add(deleteButton);
                 text.setBackground(Color.lightGray);
                 textWithPadding.setLayout(new FlowLayout(FlowLayout.LEFT));
