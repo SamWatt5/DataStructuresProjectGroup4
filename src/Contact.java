@@ -56,6 +56,7 @@ public class Contact {
     public String getNumber(){
         return number;
     }
+
     public String getMostRecentChat(){
         return messages.getMostRecentMessage().getMessageText();
     }

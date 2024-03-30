@@ -84,7 +84,7 @@ public class LandingPage extends JFrame {
     public static void createButtons(JFrame window, Tree tree){
         removeComponent(window.getContentPane(), "mainArea");
         LandingPageMainPanel mainArea = new LandingPageMainPanel(new BorderLayout(), "mainArea");
-        //mainArea.setLayout(new GridBagLayout());
+
         mainArea.setLayout(new BorderLayout());
         mainArea.setBackground(new Color(242, 233, 208));
 

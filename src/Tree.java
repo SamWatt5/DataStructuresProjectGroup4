@@ -202,9 +202,11 @@ public class Tree {
         if (current == null){
             return new Contact[0];
         }
+
         Contact[] leftContacts = getContactsRecursive(current.getLeft());
         Contact[] currentContact = {current};
         Contact[] rightContacts = getContactsRecursive(current.getRight());
+
         Contact[] result = new Contact[leftContacts.length + currentContact.length + rightContacts.length];
         System.arraycopy(leftContacts, 0, result, 0, leftContacts.length);
         System.arraycopy(currentContact, 0, result, leftContacts.length, currentContact.length);

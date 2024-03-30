@@ -188,10 +188,9 @@ public class MessagePage extends JFrame
 
         MessagePanel messageArea = new MessagePanel(new BorderLayout(), "messageArea");
         messageArea.setVisible(true);
+        messageArea.setBackground(new Color(242, 233, 208));
 
         JTextField textBox = new JTextField("Enter message here...");
-
-        messageArea.setBackground(new Color(242, 233, 208));
         textBox.setPreferredSize(new Dimension(messageArea.getWidth(), 50));
 
         JPanel contactInfoArea = new JPanel();

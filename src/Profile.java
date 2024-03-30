@@ -76,6 +76,7 @@ public class Profile {
             e.printStackTrace();
         }
     }
+
     public void loadProfile() {
         FileReader fileReader = null;
         BufferedReader bufferedReader = null;

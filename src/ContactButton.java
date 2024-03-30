@@ -106,10 +106,8 @@ public class ContactButton extends JButton {
             MessagePage messagePage = new MessagePage(tree);
             messagePage.setVisible(true);
             messagePage.createMessageArea(messagePage, contact, contactButton);
-            //messagePage.currentContactButton = ContactButton.this;
         } else {
             MessagePage.createMessageArea(frame, contact, contactButton);
-            //frame.currentContactButton = ContactButton.this;
         }
         frame.revalidate();
         frame.repaint();

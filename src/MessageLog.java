@@ -101,6 +101,7 @@ public class MessageLog {
     public Message[] getMessagesInArray() {
         Message[] messages = new Message[getSize()];
         Message current = head;
+
         for (int i = 0; i < messages.length; i++) {
             messages[i] = current;
             current = current.getNext();
@@ -110,8 +111,6 @@ public class MessageLog {
 
 
     public void generateTestMessages() {
-
-        //GENERATE EXAMPLE MESSAGES
         head = new Message("Hello " + contact.getName(), contact, true, 0, 0, 0);
         insert(new Message("Hi!", contact, false, 1, 1, 1));
         insert(new Message("How are you?", contact, true, 2, 2, 2));

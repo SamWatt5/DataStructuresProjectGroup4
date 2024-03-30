@@ -10,10 +10,11 @@ public class DeleteButton extends JButton {
         setPreferredSize(new Dimension(30, 30));
         setMaximumSize(new Dimension(Integer.MAX_VALUE, getPreferredSize().height));
         setBackground(new Color(242, 233, 208));
-        ImageIcon unscaledImage = new ImageIcon("src/images/delete.png");
 
+        ImageIcon unscaledImage = new ImageIcon("src/images/delete.png");
         Image scaledImage = unscaledImage.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         setIcon( new ImageIcon(scaledImage));
+
         setBorder(new EmptyBorder(0, 0, 0, 0));
         message = messageID;
         this.addActionListener(new ActionListener() {

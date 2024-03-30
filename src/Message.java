@@ -100,15 +100,19 @@ public class Message {
     public Contact getReciever(){
         return reciever;
     }
+
     public LocalDateTime getTimeSent(){
         return timeSent;
     }
+
     public int getIsToday(){
         return isToday;
     }
+
     public void setNext(Message newNext){
         next = newNext;
     }
+
     public Message getNext(){
         return next;
     }
