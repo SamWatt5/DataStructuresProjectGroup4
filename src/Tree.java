@@ -254,6 +254,7 @@ public class Tree {
                         this.add(contactInfo[1], contactInfo[2], Integer.parseInt(contactInfo[3]));
                     } else {
                         this.add(contactInfo[0], contactInfo[1], contactInfo[2], Integer.parseInt(contactInfo[3]));
+
                     }
                 }
             }
