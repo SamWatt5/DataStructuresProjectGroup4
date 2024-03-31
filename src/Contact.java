@@ -54,14 +54,13 @@ public class Contact {
      */
     public void setProfilePic(String newPathToProfilePic) {
         this.pathToProfilePic = newPathToProfilePic;
-        ImageIcon unscaledImage = new ImageIcon(LandingPage.class.getResource(pathToProfilePic));
+        ImageIcon unscaledImage = new ImageIcon(pathToProfilePic);
         Image scaledImage = unscaledImage.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         this.profilePic = new ImageIcon(scaledImage);
     }
 
-    public void setProfilePic(URL newPathToProfilePic) {
-        this.pathToProfilePic = newPathToProfilePic;
-        ImageIcon unscaledImage = new ImageIcon(pathToProfilePic);
+    public void setProfilePicToDefault() {
+        ImageIcon unscaledImage = new ImageIcon(LandingPage.class.getResource("defaultProfilePic.png"));
         Image scaledImage = unscaledImage.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         this.profilePic = new ImageIcon(scaledImage);
     }
