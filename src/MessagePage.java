@@ -331,7 +331,7 @@ public class MessagePage extends JFrame {
 
                         }catch (Exception ex){
                             ex.printStackTrace();
-                            contact.setProfilePic("defaultProfilePic.png");
+                            contact.setProfilePic(LandingPage.class.getResource("defaultProfilePic.png"));
                         }
                     }
                 });

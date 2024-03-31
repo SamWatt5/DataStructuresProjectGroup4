@@ -72,7 +72,7 @@ public class Profile {
      */
     public void setProfilePic(String newPathToProfilePic) {
         this.pathToProfilePic = newPathToProfilePic;
-        ImageIcon unscaledImage = new ImageIcon(pathToProfilePic);
+        ImageIcon unscaledImage = new ImageIcon(LandingPage.class.getResource(pathToProfilePic));
         Image scaledImage = unscaledImage.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         this.profilePic = new ImageIcon(scaledImage);
     }

@@ -274,7 +274,7 @@ public class LandingPage {
         BLConstraints.gridy = 0;
         BLConstraints.fill = HORIZONTAL;
         BLConstraints.weighty = 1;
-        ImageIcon unscaledImage = new ImageIcon("titleTransparent.png");
+        ImageIcon unscaledImage = new ImageIcon(LandingPage.class.getResource("titleTransparent.png"));
 
         Image scaledImage = unscaledImage.getImage().getScaledInstance(270,90, Image.SCALE_SMOOTH);
         JLabel logo = new JLabel(new ImageIcon(scaledImage));
