@@ -22,7 +22,7 @@ public class DeleteButton extends JButton {
         setMaximumSize(new Dimension(Integer.MAX_VALUE, getPreferredSize().height));
         setBackground(new Color(242, 233, 208));
 
-        ImageIcon unscaledImage = new ImageIcon("delete.png");
+        ImageIcon unscaledImage = new ImageIcon(LandingPage.class.getResource("delete.png"));
         Image scaledImage = unscaledImage.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         setIcon( new ImageIcon(scaledImage));
 
