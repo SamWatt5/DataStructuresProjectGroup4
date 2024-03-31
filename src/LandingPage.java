@@ -2,6 +2,9 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import static java.awt.GridBagConstraints.*;
 
@@ -54,6 +57,13 @@ public class LandingPage {
              * @param e the event to be processed
              */
             public void windowClosing(WindowEvent e){
+                if (!Files.exists(Path.of("files"))){
+                    try {
+                        Files.createDirectory(Path.of("files"));
+                    } catch (IOException ex) {
+                        System.out.println("Files directory cannot be created");
+                    }
+                }
                 tree.saveToFile();
                 //tree.saveContactsMessagesToFile();
                 profile.saveProfile();
@@ -81,6 +91,13 @@ public class LandingPage {
         window.setLayout(new GridBagLayout());
         window.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
+                if (!Files.exists(Path.of("files"))){
+                    try {
+                        Files.createDirectory(Path.of("files"));
+                    } catch (IOException ex) {
+                        System.out.println("Files directory cannot be created");
+                    }
+                }
                 tree.saveToFile();
                 //tree.saveContactsMessagesToFile();
                 profile.saveProfile();

@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 
+/**
+ * the class used to store the user's profile information
+ */
 public class Profile {
     private String name;
     private String number;
@@ -10,6 +13,11 @@ public class Profile {
     private ImageIcon profilePicScaled;
     private String pathToProfilePic;
 
+    /**
+     * constructor for the profile class
+     * @param name - the name of the user
+     * @param number - the phone number of the user
+     */
     public Profile(String name, String number) {
         this.name = name;
         this.number = number;
@@ -17,26 +25,50 @@ public class Profile {
         setProfilePic(pathToProfilePic);
     }
 
+    /**
+     * gets the name of the user
+     * @return the name of the user
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * gets the phone number of the user
+     * @return the phone number of the user
+     */
     public String getNumber() {
         return number;
     }
 
+    /**
+     * gets the profile picture of the user
+     * @return the profile picture of the user
+     */
     public ImageIcon getProfilePic() {
         return profilePic;
     }
 
+    /**
+     * sets the name of the user
+     * @param name - the name of the user
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * sets the phone number of the user
+     * @param number - the phone number of the user
+     */
     public void setNumber(String number) {
         this.number = number;
     }
 
+    /**
+     * sets the profile picture of the user
+     * @param newPathToProfilePic - the file path to the new profile picture
+     */
     public void setProfilePic(String newPathToProfilePic) {
         this.pathToProfilePic = newPathToProfilePic;
         ImageIcon unscaledImage = new ImageIcon(pathToProfilePic);
@@ -44,16 +76,27 @@ public class Profile {
         this.profilePic = new ImageIcon(scaledImage);
     }
 
+    /**
+     * gets the file path to the profile picture
+     * @return the file path to the profile picture
+     */
     public String getPathToProfilePic() {
         return pathToProfilePic;
     }
 
+    /**
+     * get the scaled profile picture imageIcon
+     * @return
+     */
     public ImageIcon getProfilePicScaled() {
         Image scaledImage = profilePic.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         this.profilePicScaled = new ImageIcon(scaledImage);
         return profilePicScaled;
     }
 
+    /**
+     * sets the default profile information
+     */
     public void setDefaultProfile(){
         this.name = "John Doe";
         this.number = "1234567890";
@@ -61,12 +104,9 @@ public class Profile {
         setProfilePic(pathToProfilePic);
     }
 
-    public void setProfilePicScaled(ImageIcon profilePicScaled) {
-        this.profilePicScaled = profilePicScaled;
-    }
-
-
-
+    /**
+     * saves the profile to a file
+     */
     public void saveProfile(){
         try{
             PrintWriter printWriter = new PrintWriter(new FileOutputStream( "files/profile.txt"));
@@ -77,6 +117,9 @@ public class Profile {
         }
     }
 
+    /**
+     * loads the profile from a file
+     */
     public void loadProfile() {
         FileReader fileReader = null;
         BufferedReader bufferedReader = null;

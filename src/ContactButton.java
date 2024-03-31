@@ -2,6 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
+/**
+ * The contact button class is used to create a button containing information about contacts and the most recently sent messages with them
+ */
 public class ContactButton extends JButton {
     private Contact contact;
 
@@ -12,6 +15,15 @@ public class ContactButton extends JButton {
     private JLabel recentMessage = new JLabel();
     private JLabel messageTime = new JLabel();
     private Color buttonColour;
+
+    /**
+     * Constructor for ContactButton class
+     * @param frame - the frame that the button is being displayed on
+     * @param newWindow - the panel that the buttons are being added to
+     * @param newContact - the contact in the button
+     * @param tree - the tree of contacts
+     * @param profile - the profile of the user
+     */
     public ContactButton(JFrame frame, JPanel newWindow, Contact newContact, Tree tree, Profile profile){
         window = newWindow;
         contact = newContact;
@@ -61,6 +73,11 @@ public class ContactButton extends JButton {
         this.add(panel);
 
         this.addMouseListener(new java.awt.event.MouseAdapter() {
+
+            /**
+             * when the button is clicked, changes the colour of the button, and updates the messageArea
+             * @param evt - the mouse event
+             */
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 if (!isClicked) {
                     isClicked = true;
@@ -84,21 +101,32 @@ public class ContactButton extends JButton {
                 //System.out.println("Mouse entered");
             }
         });
-
-
-
-
-
     }
+
+    /**
+     * sets the colour of the button
+     * @param color - the colour to set the button to
+     */
     public void setButtonColour(Color color){
         this.buttonColour = color;
         setBackground(color);
     }
+
+    /**
+     * gets the colour of the button
+     * @return the colour of the button
+     */
     public Color getButtonColour(){
         return buttonColour;
     }
 
-
+    /**
+     * updates the messagePage to reflect the chosen contact
+     * @param contact - the contact being processed
+     * @param frame - the JFrame in which the contactButton is
+     * @param tree - the tree of contacts
+     * @param profile - the profile of the user
+     */
     public void openMessagePageWithContact(Contact contact, JFrame frame, Tree tree, Profile profile){
 
         if (frame.isVisible() && frame.getName().equals("landingPage")){
@@ -113,18 +141,28 @@ public class ContactButton extends JButton {
         frame.repaint();
     }
 
+    /**
+     * gets the contact of button
+     * @return the contact of the button
+     */
     public Contact getContact() {
         return contact;
     }
+
+    /**
+     * changes the button's text to reflect changes in messages
+     */
     public void update(){
         recentMessage.setText(contact.getMostRecentChat());
         messageTime.setText(contact.getMessages().getMostRecentMessage().getTimeSentFormatted());
 
     }
+
+    /**
+     * gets the panel that the button is in
+     * @return
+     */
     public JPanel getButtonPanel() {
         return buttonPanel;
-    }
-    public void setButtonPanelColour(Color color){
-        window.setBackground(color);
     }
 }

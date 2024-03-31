@@ -225,11 +225,11 @@ public class Tree {
      */
     private void saveToFileRecursive(Contact root, PrintWriter printWriter){
         if (root != null) {
-            saveToFileRecursive(root.left, printWriter);
+            saveToFileRecursive(root.getLeft(), printWriter);
             String regex = "%% 101010CONTACTSPLIT010101 %%";
             printWriter.println(root.getPathToProfilePic()+ regex + root.getName() + regex + root.getNumber()+ regex + root.getID());
             root.getMessages().saveLogToFile();
-            saveToFileRecursive(root.right, printWriter);
+            saveToFileRecursive(root.getRight(), printWriter);
         }
     }
 

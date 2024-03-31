@@ -1,14 +1,23 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
-public class MessagePage extends JFrame
 
-{
-    public static ContactButton contact;
+/**
+ * Class representing the message page of the program
+ */
+public class MessagePage extends JFrame {
     private static Tree tree;
     private Profile profile;
 
+    /**
+     * Constructor for the message page
+     * @param theTree - the tree of contacts
+     * @param theProfile - the profile of the user
+     */
     public MessagePage(Tree theTree, Profile theProfile) //Contact contact)
     {
         //this.contact = contact.getContactButton();
@@ -16,9 +25,16 @@ public class MessagePage extends JFrame
         profile = theProfile;
         createMessagePage(this, tree, null, theProfile);
     }
+
+    /**
+     * Creates the message page
+     * @param messagePage - the frame which the messagePage is displayed on
+     * @param tree - the tree of contacts
+     * @param contactButton - the contact button used to open the message page
+     * @param profile - the profile of the user
+     */
     public static void createMessagePage(JFrame messagePage, Tree tree, ContactButton contactButton, Profile profile)
     {
-        //Creates and sets up the window
         messagePage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         messagePage.setSize(1300, 792);
         messagePage.setTitle("DunChat message page");
@@ -29,6 +45,13 @@ public class MessagePage extends JFrame
 
         messagePage.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
+                if (!Files.exists(Path.of("files"))){
+                    try {
+                        Files.createDirectory(Path.of("files"));
+                    } catch (IOException ex) {
+                        System.out.println("Files directory cannot be created");
+                    }
+                }
                 tree.saveToFile();
                 //tree.saveContactsMessagesToFile();
                 profile.saveProfile();
@@ -46,24 +69,45 @@ public class MessagePage extends JFrame
 
     }
 
+    /**
+     * Creates the menu bar at the top of the message page, allowing the user to go back to the landing page or edit contacts
+     * @param window - the window the menu bar is displayed on
+     * @param tree - the tree of contacts
+     * @param contactButton - a contactButton
+     * @param profile - the profile of the user
+     */
     public static void createMenuBar(JFrame window, Tree tree, ContactButton contactButton, Profile profile){
         JMenuBar menuBar = new JMenuBar();
         JButton home = new JButton("Home");
         JMenu contacts = new JMenu("Contacts");
-        JMenu sort = new JMenu("Sort");
         JMenuItem newContact = new JMenuItem("New Contact");
         JMenuItem deleteContact = new JMenuItem("Delete Contact");
         newContact.addActionListener(new ActionListener() {
+
+            /**
+             * When newContact button pressed, calls newContactFrame method
+             * @param e - the action event
+             */
             public void actionPerformed(ActionEvent e) {
                 newContactFrame(window, tree, contactButton, profile);
             }
         });
         deleteContact.addActionListener(new ActionListener() {
+
+            /**
+             * When deleteContact button pressed, calls deleteContactFrame method
+             * @param e - the action event
+             */
             public void actionPerformed(ActionEvent e) {
                 deleteContactFrame(window, tree, contactButton, profile);
             }
         });
         home.addActionListener(new ActionListener() {
+
+            /**
+             * When home button pressed, deletes the window and creates a new landing page
+             * @param e the event to be processed
+             */
             public void actionPerformed(ActionEvent e) {
                 window.dispose();
                 LandingPage.createLandingPage(tree);
@@ -78,6 +122,13 @@ public class MessagePage extends JFrame
 
     }
 
+    /**
+     * Creates a frame allowing the user to delete a contact
+     * @param window - the window the frame is displayed on
+     * @param tree - the tree of contacts
+     * @param contactButton - a contactButton
+     * @param profile - the profile of the user
+     */
     public static void deleteContactFrame(JFrame window, Tree tree, ContactButton contactButton, Profile profile){
         JFrame deleteContactFrame = new JFrame();
         deleteContactFrame.setSize(300, 400);
@@ -90,6 +141,11 @@ public class MessagePage extends JFrame
         JTextField contactName = new JTextField("Enter contact name...");
         JButton submit = new JButton("Submit");
         submit.addActionListener(new ActionListener() {
+
+            /**
+             * when the submit button is pressed, deletes the specified contact from the tree, and updates messagePage
+             * @param e the event to be processed
+             */
             public void actionPerformed(ActionEvent e) {
                 tree.deleteContact(contactName.getText());
                 createMessagePage(window, tree, contactButton, profile);
@@ -102,6 +158,13 @@ public class MessagePage extends JFrame
         deleteContactFrame.add(submit);
     }
 
+    /**
+     * Creates a frame allowing the user to add a new contact
+     * @param window - the window the frame is displayed on
+     * @param tree - the tree of contacts
+     * @param contactButton - a contactButton
+     * @param profile - the profile of the user
+     */
     public static void newContactFrame(JFrame window, Tree tree, ContactButton contactButton, Profile profile){
         JFrame newContactFrame = new JFrame();
         newContactFrame.setSize(300, 400);
@@ -115,6 +178,11 @@ public class MessagePage extends JFrame
         JTextField contactNumber = new JTextField("Enter contact number...");
         JButton submit = new JButton("Submit");
         submit.addActionListener(new ActionListener() {
+
+            /**
+             * when the submit button is pressed, creates a new contact with the specified parameters and adds it to the tree
+             * @param e the event to be processed
+             */
             public void actionPerformed(ActionEvent e) {
                 Contact newContact = new Contact(contactName.getText(), contactNumber.getText(), tree.findHighestID(tree.getRoot()) + 1);
                 newContact.getMessages().generateTestMessages();
@@ -145,6 +213,13 @@ public class MessagePage extends JFrame
         newContactFrame.add(submit);
     }
 
+    /**
+     * Creates the bar of contactButtons on the left side of the message page
+     * @param window - the window that the contactBar is displayed on
+     * @param tree - the tree of contacts
+     * @param contactButton - the contactButton used to open the message page
+     * @param profile - the profile of the user
+     */
     public static void createContactBar(JFrame window, Tree tree, ContactButton contactButton, Profile profile){
         removeComponent(window.getContentPane(), "contactBar");
         JPanel contactBar = new JPanel();
@@ -169,6 +244,11 @@ public class MessagePage extends JFrame
         window.add(scrollPane, gbc);
     }
 
+    /**
+     * Removes a component with a given name from a container, recursively
+     * @param container
+     * @param name
+     */
     public static void removeComponent(Container container, String name){
         for (Component component : container.getComponents()) {
             if (name.equals(component.getName())) {
@@ -183,6 +263,11 @@ public class MessagePage extends JFrame
         }
     }
 
+    /**
+     * Creates the message area of the message page
+     * @param window - the window the message area is displayed on
+     * @param contact - the contact being shown
+     */
     public static void createMessageArea(JFrame window, Contact contact) {
         contact.getMessages().printLogToTerminal();
         removeComponent(window.getContentPane(), "messageArea");
@@ -210,6 +295,11 @@ public class MessagePage extends JFrame
         
         JButton editContact = new JButton("Edit Contact");
         editContact.addActionListener(new ActionListener() {
+
+            /**
+             * lets the user edit the contact's details when the button is pressed
+             * @param e - the action event
+             */
             public void actionPerformed(ActionEvent e) {
                 JFrame editContactFrame = new JFrame();
                 editContactFrame.setSize(300, 400);
@@ -226,6 +316,11 @@ public class MessagePage extends JFrame
 
                 JButton submit = new JButton("Submit");
                 contactPicButton.addActionListener(new ActionListener() {
+
+                    /**
+                     * loads a fileDialog allowing the user to choose a profile picture for the contact
+                     * @param e - the action event
+                     */
                     public void actionPerformed(ActionEvent e) {
                         try {
 
@@ -241,6 +336,11 @@ public class MessagePage extends JFrame
                 });
 
                 submit.addActionListener(new ActionListener() {
+
+                    /**
+                     * when the submit button is pressed, updates the contact's details and message area
+                     * @param e - the action event
+                     */
                     public void actionPerformed(ActionEvent e) {
                         contact.setName(contactName.getText());
                         contact.setNumber(contactNumber.getText());
@@ -294,6 +394,11 @@ public class MessagePage extends JFrame
 
         JButton sendButton = new JButton("Send");
         sendButton.addActionListener(new ActionListener() {
+
+            /**
+             * when the send button is pressed, adds the message in the textBox to the message log of the selected contact
+             * @param e the event to be processed
+             */
             public void actionPerformed(ActionEvent e) {
                 String textToSend = textBox.getText();
                 Message newMessage = new Message(textToSend, contact, true, LocalDateTime.now(),contact.getMessages().getMostRecentMessage().getMessageID()+1);
@@ -316,43 +421,45 @@ public class MessagePage extends JFrame
         window.add(messageArea, gbc);
     }
 
-    public void CreateEditContactPage(Contact contact, JFrame window, Tree tree){
-        
-    }
-
+    /**
+     * Creates a panel containing the messages of a contact
+     * @param contact - the contact whose messages are displayed
+     * @param window - the window the panel is displayed on
+     * @return a panel containing the messages of the contact
+     */
     public static JPanel createTexts(Contact contact, JFrame window){
-
         JPanel textsPanel = new JPanel();
         textsPanel.setLayout(new BoxLayout(textsPanel, BoxLayout.Y_AXIS));
-        MessageLog messageLog = contact.getMessages();
 
+        MessageLog messageLog = contact.getMessages();
 
         for (int i = 0; i < messageLog.getSize(); i++) {
             Message message = messageLog.getMessageFromIndex(i);
+
             JLabel text = new JLabel();
             text.setText(message.getMessageText());
             text.setOpaque(true);
             text.setFont(new Font("SansSerif", Font.PLAIN, 20));
-            JPanel textWithPadding = new JPanel();
 
+            JPanel textWithPadding = new JPanel();
             textWithPadding.setPreferredSize(new Dimension(textsPanel.getWidth(), 50));
             textWithPadding.setMinimumSize(new Dimension(textsPanel.getWidth(), 50));
             //textWithPadding.setBackground(new Color((int)(Math.random()*255),(int)(Math.random()*255),(int)(Math.random()*255)));
             textWithPadding.setBackground(new Color(242, 233, 208));
-            if (message.isSent()){
 
+            if (message.isSent()){
                 text.setBackground(Color.cyan);
                 textWithPadding.setLayout(new FlowLayout(FlowLayout.RIGHT));
                 textWithPadding.add(text);
                 DeleteButton deleteButton = new DeleteButton(contact, messageLog.getMessageFromIndex(i).getMessageID(), window);
                 textWithPadding.add(deleteButton);
+
             }else{
                 DeleteButton deleteButton = new DeleteButton(contact, messageLog.getMessageFromIndex(i).getMessageID(), window);
                 textWithPadding.add(deleteButton);
                 text.setBackground(Color.lightGray);
                 textWithPadding.setLayout(new FlowLayout(FlowLayout.LEFT));
                 textWithPadding.add(text);
-
 
             }
 

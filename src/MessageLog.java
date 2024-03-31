@@ -2,17 +2,27 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
+/**
+ * Linked list of messages between the user and a contact.
+ */
 public class MessageLog {
 
     private Message head;
     private Contact contact;
 
-
+    /**
+     * Constructor for MessageLog
+     * @param newContact - the contact associated with the message log
+     */
     public MessageLog(Contact newContact) {
         contact = newContact;
         loadFromFile();
     }
 
+    /**
+     * Inserts a message into the linked list
+     * @param message - the message to be added
+     */
     public void insert(Message message) {
         Message current = head;
         while (current.getNext() != null) {
@@ -25,6 +35,11 @@ public class MessageLog {
         }
     }
 
+    /**
+     * Gets the message at a specific index
+     * @param i - the index
+     * @return - the message at the index
+     */
     public Message getMessageFromIndex(int i) {
         Message current = head;
         for (int j = 0; j < i; j++) {
@@ -33,6 +48,10 @@ public class MessageLog {
         return current;
     }
 
+    /**
+     * Gets the head of the linked list
+     * @return - the head of the linked list
+     */
     public int getSize() {
         int size = 0;
         Message current = head;
@@ -43,6 +62,9 @@ public class MessageLog {
         return size;
     }
 
+    /**
+     * prints the contents of the messageLog to the terminal
+     */
     public void printLogToTerminal() {
         Message current = head;
         while (current != null) {
@@ -56,6 +78,10 @@ public class MessageLog {
         }
     }
 
+    /**
+     * gets the most recent message in the messageLog
+     * @return the most recent message
+     */
     public Message getMostRecentMessage() {
         Message current = head;
         while (current.getNext() != null) {
@@ -65,6 +91,10 @@ public class MessageLog {
         return current;
     }
 
+    /**
+     * deletes a message from the messageLog
+     * @param messageIDToBeDeleted - the ID of the message being deleted
+     */
     public void deleteMessage(int messageIDToBeDeleted) {
 
         if (messageIDToBeDeleted < 0 || head == null) {
@@ -92,12 +122,18 @@ public class MessageLog {
             return;
         }
 
-        // Remove the message from the linked list
         prev.setNext(current.getNext());
         System.out.println("Message deleted successfully.");
         printLogToTerminal();
+        if (contact.getContactButton() != null){
+            contact.getContactButton().update();
+        }
     }
 
+    /**
+     * gets the messages in the messageLog as an array
+     * @return
+     */
     public Message[] getMessagesInArray() {
         Message[] messages = new Message[getSize()];
         Message current = head;
@@ -109,7 +145,9 @@ public class MessageLog {
         return messages;
     }
 
-
+    /**
+     * generates test messages for the messageLog
+     */
     public void generateTestMessages() {
         head = new Message("Hello " + contact.getName(), contact, true, 0, 0, 0);
         insert(new Message("Hi!", contact, false, 1, 1, 1));
@@ -123,6 +161,9 @@ public class MessageLog {
 
     }
 
+    /**
+     * saves the messageLog to a file
+     */
     public void saveLogToFile() {
         try {
             PrintWriter printWriter = new PrintWriter(new FileOutputStream("files/" + contact.getName() + "_messages.txt", false));
@@ -149,6 +190,9 @@ public class MessageLog {
 
     }
 
+    /**
+     * loads the messageLog from a file
+     */
     public void loadFromFile() {
 
         FileReader fileReader = null;
