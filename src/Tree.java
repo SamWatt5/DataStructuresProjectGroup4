@@ -174,8 +174,8 @@ public class Tree {
         this.add("Sam", "07123456789", 0);
         this.add("Jonah", "07987654321", 1);
         this.add("Harrison", "01312345678", 2);
-        this.add("Ruairidh", "666", 3);
-        this.add("Jesus", "8008135", 4);
+        this.add("Ruairidh", "78247434", 3);
+        this.add("Linus Torvalds", "555444668899", 4);
     }
 
     /**
