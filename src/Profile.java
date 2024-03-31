@@ -72,7 +72,7 @@ public class Profile {
      */
     public void setProfilePic(String newPathToProfilePic) {
         this.pathToProfilePic = newPathToProfilePic;
-        ImageIcon unscaledImage = new ImageIcon(LandingPage.class.getResource(pathToProfilePic));
+        ImageIcon unscaledImage = new ImageIcon(pathToProfilePic);
         Image scaledImage = unscaledImage.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         this.profilePic = new ImageIcon(scaledImage);
     }
@@ -102,7 +102,13 @@ public class Profile {
         this.name = "John Doe";
         this.number = "1234567890";
         this.pathToProfilePic = "defaultProfilePic.png";
-        setProfilePic(pathToProfilePic);
+        setProfilePicToDefault();
+    }
+
+    public void setProfilePicToDefault() {
+        ImageIcon unscaledImage = new ImageIcon(LandingPage.class.getResource("defaultProfilePic.png"));
+        Image scaledImage = unscaledImage.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        this.profilePic = new ImageIcon(scaledImage);
     }
 
     /**
