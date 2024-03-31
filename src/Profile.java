@@ -13,6 +13,8 @@ public class Profile {
 
     private ImageIcon profilePicScaled;
     private String pathToProfilePic;
+    private Boolean isDefaultProfile;
+
 
     /**
      * constructor for the profile class
@@ -22,8 +24,8 @@ public class Profile {
     public Profile(String name, String number) {
         this.name = name;
         this.number = number;
-        this.pathToProfilePic = "defaultProfilePic.png";
-        setProfilePic(pathToProfilePic);
+        setProfilePicToDefault();
+        isDefaultProfile = true;
     }
 
     /**
@@ -75,6 +77,7 @@ public class Profile {
         ImageIcon unscaledImage = new ImageIcon(pathToProfilePic);
         Image scaledImage = unscaledImage.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         this.profilePic = new ImageIcon(scaledImage);
+        this.isDefaultProfile = false;
     }
 
     /**
@@ -117,7 +120,8 @@ public class Profile {
     public void saveProfile(){
         try{
             PrintWriter printWriter = new PrintWriter(new FileOutputStream( "files/profile.txt"));
-            printWriter.println(getPathToProfilePic() + "%% 101010PROFILESPLIT010101 %%" + name + "%% 101010PROFILESPLIT010101 %%" + number);
+            printWriter.println(getPathToProfilePic() + "%% 101010PROFILESPLIT010101 %%"
+                    + name + "%% 101010PROFILESPLIT010101 %%" + number + "%% 101010PROFILESPLIT010101 %%" + isDefaultProfile);
             printWriter.close();
         }catch (IOException e){
             e.printStackTrace();
@@ -137,9 +141,14 @@ public class Profile {
             while ((nextLine = bufferedReader.readLine()) != null) {
                 String[] contactInfo = nextLine.split("%% 101010PROFILESPLIT010101 %%");
                 this.pathToProfilePic = contactInfo[0];
-                setProfilePic(pathToProfilePic);
                 this.name = contactInfo[1];
                 this.number = contactInfo[2];
+                this.isDefaultProfile = Boolean.parseBoolean(contactInfo[3]);
+                if (isDefaultProfile) {
+                    setProfilePicToDefault();
+                }else{
+                    setProfilePic(pathToProfilePic);
+                }
             }
         } catch (FileNotFoundException e) {
             System.out.println("Profile file not found, using default profile.");

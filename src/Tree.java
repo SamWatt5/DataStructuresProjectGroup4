@@ -228,7 +228,8 @@ public class Tree {
         if (root != null) {
             saveToFileRecursive(root.getLeft(), printWriter);
             String regex = "%% 101010CONTACTSPLIT010101 %%";
-            printWriter.println(root.getPathToProfilePic()+ regex + root.getName() + regex + root.getNumber()+ regex + root.getID());
+            printWriter.println(root.getPathToProfilePic()+ regex + root.getName()
+                    + regex + root.getNumber()+ regex + root.getID() + regex + root.getIsDefaultProfilePic());
             root.getMessages().saveLogToFile();
             saveToFileRecursive(root.getRight(), printWriter);
         }
@@ -248,7 +249,13 @@ public class Tree {
 
             while ((nextLine = bufferedReader.readLine()) != null) {
                 String[] contactInfo = nextLine.split("%% 101010CONTACTSPLIT010101 %%");
-                this.add(contactInfo[0], contactInfo[1], contactInfo[2], Integer.parseInt(contactInfo[3]));
+                if (contactInfo.length == 5) {
+                    if (contactInfo[4].equals("true")) {
+                        this.add(contactInfo[1], contactInfo[2], Integer.parseInt(contactInfo[3]));
+                    } else {
+                        this.add(contactInfo[0], contactInfo[1], contactInfo[2], Integer.parseInt(contactInfo[3]));
+                    }
+                }
             }
 
         } catch (Exception e) {

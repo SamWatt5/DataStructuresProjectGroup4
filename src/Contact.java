@@ -16,6 +16,8 @@ public class Contact {
     private ImageIcon profilePicScaled;
     private String pathToProfilePic;
     private int ID;
+    private Boolean isDefaultProfilePic = true;
+
 
     /**
      * Constructor for the contact
@@ -27,8 +29,7 @@ public class Contact {
         name = newName;
         number = phoneNumber;
         ID = newID;
-        pathToProfilePic = "src/images/defaultProfilePic.png";
-        setProfilePic(pathToProfilePic);
+        setProfilePicToDefault();
         messages = new MessageLog(this);
     }
 
@@ -57,12 +58,14 @@ public class Contact {
         ImageIcon unscaledImage = new ImageIcon(pathToProfilePic);
         Image scaledImage = unscaledImage.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         this.profilePic = new ImageIcon(scaledImage);
+        isDefaultProfilePic = false;
     }
 
     public void setProfilePicToDefault() {
         ImageIcon unscaledImage = new ImageIcon(LandingPage.class.getResource("defaultProfilePic.png"));
         Image scaledImage = unscaledImage.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         this.profilePic = new ImageIcon(scaledImage);
+        isDefaultProfilePic = true;
     }
 
 
@@ -114,6 +117,10 @@ public class Contact {
      */
     public void setContactButton(ContactButton contactButton) {
         this.contactButton = contactButton;
+    }
+
+    public Boolean getIsDefaultProfilePic() {
+        return isDefaultProfilePic;
     }
 
     /**
