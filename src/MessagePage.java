@@ -40,7 +40,7 @@ public class MessagePage extends JFrame {
         messagePage.setSize(1300, 792);
         messagePage.setTitle("DunChat message page");
         messagePage.getContentPane().setBackground(new Color(242, 233, 208));
-        messagePage.setIconImage(new ImageIcon(MessagePage.class.getResource("images/iconFixed.png")).getImage());
+        messagePage.setIconImage(new ImageIcon(MessagePage.class.getResource("iconFixed.png")).getImage());
         messagePage.setLocationRelativeTo(null);
         messagePage.setLayout(new GridBagLayout());
 
@@ -331,7 +331,7 @@ public class MessagePage extends JFrame {
 
                         }catch (Exception ex){
                             ex.printStackTrace();
-                            contact.setProfilePic("src/images/defaultProfilePic.png");
+                            contact.setProfilePic("defaultProfilePic.png");
                         }
                     }
                 });

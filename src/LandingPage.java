@@ -43,7 +43,7 @@ public class LandingPage {
         window.setName("landingPage");
         window.getContentPane().setBackground(new Color(242, 233, 208));
 
-        window.setIconImage(new ImageIcon(MessagePage.class.getResource("images/iconFixed.png")).getImage());
+        window.setIconImage(new ImageIcon(MessagePage.class.getResource("iconFixed.png")).getImage());
         window.setLocationRelativeTo(null);
         window.setLayout(new GridBagLayout());
         Tree tree = new Tree(false);
@@ -87,7 +87,7 @@ public class LandingPage {
         window.setTitle("DunChat landing page");
         window.setName("landingPage");
         window.getContentPane().setBackground(new Color(242, 233, 208));
-        window.setIconImage(new ImageIcon(MessagePage.class.getResource("images/iconFixed.png")).getImage());
+        window.setIconImage(new ImageIcon(MessagePage.class.getResource("iconFixed.png")).getImage());
         window.setLocationRelativeTo(null);
         window.setLayout(new GridBagLayout());
         window.addWindowListener(new WindowAdapter(){
@@ -197,7 +197,7 @@ public class LandingPage {
 
                         }catch (Exception ex){
                             ex.printStackTrace();
-                            profile.setProfilePic("src/images/defaultProfilePic.png");
+                            profile.setProfilePic("defaultProfilePic.png");
                         }
                     }
                 });
@@ -274,7 +274,7 @@ public class LandingPage {
         BLConstraints.gridy = 0;
         BLConstraints.fill = HORIZONTAL;
         BLConstraints.weighty = 1;
-        ImageIcon unscaledImage = new ImageIcon("src/images/titleTransparent.png");
+        ImageIcon unscaledImage = new ImageIcon("titleTransparent.png");
 
         Image scaledImage = unscaledImage.getImage().getScaledInstance(270,90, Image.SCALE_SMOOTH);
         JLabel logo = new JLabel(new ImageIcon(scaledImage));

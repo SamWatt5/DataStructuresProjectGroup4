@@ -22,7 +22,7 @@ public class Profile {
     public Profile(String name, String number) {
         this.name = name;
         this.number = number;
-        this.pathToProfilePic = "src/images/defaultProfilePic.png";
+        this.pathToProfilePic = "defaultProfilePic.png";
         setProfilePic(pathToProfilePic);
     }
 
@@ -101,7 +101,7 @@ public class Profile {
     public void setDefaultProfile(){
         this.name = "John Doe";
         this.number = "1234567890";
-        this.pathToProfilePic = "src/images/defaultProfilePic.png";
+        this.pathToProfilePic = "defaultProfilePic.png";
         setProfilePic(pathToProfilePic);
     }
 
