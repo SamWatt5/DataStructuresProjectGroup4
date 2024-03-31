@@ -6,6 +6,7 @@ import java.util.Date;
 
 /**
  * used to store information about the messages
+ * @author Sam Watts, Jonah Phillipson-Masters, Harrison Reed
  */
 public class Message {
 

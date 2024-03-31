@@ -3,6 +3,7 @@ import java.awt.*;
 
 /**
  * Class that creates a JPanel with a name
+ * @author Sam Watts, Jonah Phillipson-Masters, Harrison Reed
  */
 public class LandingPageMainPanel extends JPanel {
 

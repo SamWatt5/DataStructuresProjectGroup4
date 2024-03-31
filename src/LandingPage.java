@@ -10,6 +10,7 @@ import static java.awt.GridBagConstraints.*;
 
 /**
  * Landing page for the application
+ * @author Sam Watts, Jonah Phillipson-Masters, Harrison Reed
  */
 public class LandingPage {
 

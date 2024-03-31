@@ -4,6 +4,7 @@ import java.io.*;
 
 /**
  * the class used to store the user's profile information
+ * @author Sam Watts, Jonah Phillipson-Masters, Harrison Reed
  */
 public class Profile {
     private String name;

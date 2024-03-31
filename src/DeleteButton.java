@@ -5,6 +5,7 @@ import java.awt.event.*;
 
 /**
  * Class for button next to messages in messageArea which deletes that button when clicked
+ * @author Sam Watts, Jonah Phillipson-Masters, Harrison Reed
  */
 public class DeleteButton extends JButton {
     private int message;

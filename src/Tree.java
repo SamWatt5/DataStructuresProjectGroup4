@@ -3,6 +3,7 @@ import java.io.*;
 
 /**
  * Binary tree of contacts
+ * @author Sam Watts, Jonah Phillipson-Masters, Harrison Reed
  */
 public class Tree {
     private Contact root;

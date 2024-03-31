@@ -3,6 +3,7 @@ import java.awt.*;
 
 /**
  * The message panel, containing a name
+ * @author Sam Watts, Jonah Phillipson-Masters, Harrison Reed
  */
 public class MessagePanel extends JPanel {
     private String name;

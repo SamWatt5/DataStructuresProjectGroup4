@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 /**
  * Class representing the message page of the program
+ * @author Sam Watts, Jonah Phillipson-Masters, Harrison Reed
  */
 public class MessagePage extends JFrame {
     private static Tree tree;

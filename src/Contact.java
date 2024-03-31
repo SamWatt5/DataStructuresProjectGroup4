@@ -3,6 +3,7 @@ import java.awt.*;
 
 /**
  * Contact class
+ * @author Sam Watts, Jonah Phillipson-Masters, Harrison Reed
  */
 public class Contact {
     private MessageLog messages;

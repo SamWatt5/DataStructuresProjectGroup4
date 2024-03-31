@@ -4,6 +4,7 @@ import java.awt.event.MouseEvent;
 
 /**
  * The contact button class is used to create a button containing information about contacts and the most recently sent messages with them
+ * @author Sam Watts, Jonah Phillipson-Masters, Harrison Reed
  */
 public class ContactButton extends JButton {
     private Contact contact;
